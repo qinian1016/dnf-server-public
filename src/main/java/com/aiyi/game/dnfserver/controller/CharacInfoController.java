@@ -28,8 +28,12 @@ public class CharacInfoController {
     @GetMapping
     public ResultPage<CharacInfo> list(Integer minLev, Integer maxLevel, Integer job,
                                        String name, String account, Integer page, Integer pageSize){
-        if (null == page) page = 1;
-        if (null == pageSize) pageSize = 10;
+        if (null == page) {
+            page = 1;
+        }
+        if (null == pageSize) {
+            pageSize = 10;
+        }
         ResultPage<CharacInfo> list = characService.list(minLev, maxLevel, job, name, account, page, pageSize);
         for (CharacInfo info: list.getList()){
             CharsetUtil.latin12utf8(info);

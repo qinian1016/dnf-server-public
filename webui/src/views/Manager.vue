@@ -32,18 +32,18 @@
                             <el-menu-item index="/manager/account">账号管理</el-menu-item>
                             <el-menu-item index="/manager/charac">角色管理</el-menu-item>
                         </el-sub-menu>
-                        <el-sub-menu index="2">
-                            <template #title>
-                                <el-icon><notebook /></el-icon>
-                                <span>内容管理</span>
-                            </template>
-                            <el-menu-item index="/manager/notice">公告管理</el-menu-item>
-                            <el-menu-item index="/manager/news">新闻管理</el-menu-item>
-                        </el-sub-menu>
-                        <el-menu-item index="/manager/action">
-                            <el-icon><magic-stick /></el-icon>
-                            <span slot="title">活动管理</span>
-                        </el-menu-item>
+<!--                        <el-sub-menu index="2">-->
+<!--                            <template #title>-->
+<!--                                <el-icon><notebook /></el-icon>-->
+<!--                                <span>内容管理</span>-->
+<!--                            </template>-->
+<!--                            <el-menu-item index="/manager/notice">公告管理</el-menu-item>-->
+<!--                            <el-menu-item index="/manager/news">新闻管理</el-menu-item>-->
+<!--                        </el-sub-menu>-->
+<!--                        <el-menu-item index="/manager/action">-->
+<!--                            <el-icon><magic-stick /></el-icon>-->
+<!--                            <span slot="title">活动管理</span>-->
+<!--                        </el-menu-item>-->
                         <el-sub-menu index="3">
                             <template #title>
                                 <el-icon><shopping-cart /></el-icon>
@@ -52,10 +52,10 @@
                             <el-menu-item index="/manager/keys">卡密管理</el-menu-item>
 <!--                            <el-menu-item index="/manager/k-logs">充值历史</el-menu-item>-->
                         </el-sub-menu>
-                        <el-menu-item index="/manager/databases">
-                            <el-icon><data-board /></el-icon>
-                           <span slot="title">数据库管理</span>
-                        </el-menu-item>
+<!--                        <el-menu-item index="/manager/databases">-->
+<!--                            <el-icon><data-board /></el-icon>-->
+<!--                           <span slot="title">数据库管理</span>-->
+<!--                        </el-menu-item>-->
                     </el-scrollbar>
                 </el-menu>
             </el-aside>

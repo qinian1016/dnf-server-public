@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public class AccountVODao extends BaseDaoImpl<AccountVO, Integer> {
+public class AccountVODao extends BaseDaoImpl<AccountVO, Long> {
 }

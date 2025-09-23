@@ -24,11 +24,14 @@
 </template>
 
 <script>
+import api from "../../libs/api.js";
+
 export default {
     name: "MgrNotice",
     data(){
         return {
-            textarea: ''
+            textarea: '',
+            ser: api
         }
     },
     mounted() {

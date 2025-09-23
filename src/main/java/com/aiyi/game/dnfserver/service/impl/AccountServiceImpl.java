@@ -135,7 +135,7 @@ public class AccountServiceImpl implements AccountService {
                                       int pageSize) {
         List<AccountVO> list = null;
         int count = 0;
-        int userId = Integer.parseInt(ThreadUtil.getUserId() + "");
+        long userId = ThreadUtil.getUserId();
         AccountVO accountVO = accountVODao.get(userId);
         if (accountVO.isAdmin()){
             list =  accountDao.listAll(account, loginStatus,
@@ -153,10 +153,17 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void recharge(int uid, int face) {
+    public void recharge(long uid, int face) {
+        long userId = ThreadUtil.getUserId();
+        AccountVO thisAccount = accountVODao.get(userId);
         AccountVO accountVO = accountVODao.get(uid);
         if (null == accountVO){
             throw new ValidationException("Undefined the user!");
+        }
+        // 不是管理员且不是自己的下级
+        if (!thisAccount.isAdmin() && accountVO.getParentUid() != thisAccount.getUid()
+                && accountVO.getUid() != thisAccount.getUid()){
+            throw new ValidationException("不能夸权限为其他工会的成员充值");
         }
         accountVODao.execute("update taiwan_billing.cash_cera set " +
                 "cera = cera + ? where account=?", face, uid);
@@ -164,7 +171,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public AccountVO info(int uid) {
+    public AccountVO info(long uid) {
         AccountVO accountVO = accountVODao.get(uid);
         List<AccountVO> list = accountVODao.list("SELECT cera FROM taiwan_billing.cash_cera " +
                 "WHERE account=?", uid);

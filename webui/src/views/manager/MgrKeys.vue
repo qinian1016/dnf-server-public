@@ -14,14 +14,14 @@
                     <el-input v-model="from.content" placeholder="模糊搜索"></el-input>
                 </el-form-item>
                 <el-form-item label="类型">
-                    <el-select v-model="from.type" placeholder="卡密类型">
+                    <el-select v-model="from.type" placeholder="卡密类型" style="width: 150px">
                         <el-option label="全部类型" value=""></el-option>
                         <el-option label="点券" value="0"></el-option>
                         <el-option label="装备CDK" value="1"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="是否使用">
-                    <el-select v-model="from.status" placeholder="是否使用">
+                    <el-select v-model="from.status" placeholder="是否使用" style="width: 150px">
                         <el-option label="全部状态" value=""></el-option>
                         <el-option label="未使用" value="0"></el-option>
                         <el-option label="已使用" value="1"></el-option>
@@ -43,22 +43,22 @@
             <el-table-column fixed prop="id" label="ID" min-width="50" />
             <el-table-column prop="content" label="卡密" min-width="320"/>
             <el-table-column prop="type" label="类型" width="70">
-                <template slot-scope="scope">
+                <template #default="{ row }">
                     <div style="text-align: center;">
-                        <el-tag v-text="scope.row.type === 0 ? '点券' : '装备'"></el-tag>
+                        <el-tag v-text="row.type === 0 ? '点券' : '装备'"></el-tag>
                     </div>
                 </template>
             </el-table-column>
             <el-table-column prop="face" label="面值" min-width="120" >
-                <template slot-scope="scope">
-                    <span v-text="scope.row.type === 0 ? scope.row.face : scope.row.faceName"></span>
+                <template #default="{ row }">
+                    <span v-text="row.type === 0 ? row.face : row.faceName"></span>
                 </template>
             </el-table-column>
             <el-table-column prop="status" label="是否使用" width="80">
-                <template slot-scope="scope">
+                <template #default="{ row }">
                     <div style="text-align: center;">
-                        <el-tag :type="!scope.row.status ? 'success' : 'info'"
-                                v-text="!scope.row.status ? '未使用' : '已使用'"></el-tag>
+                        <el-tag :type="!row.status ? 'success' : 'info'"
+                                v-text="!row.status ? '未使用' : '已使用'"></el-tag>
                     </div>
                 </template>
             </el-table-column>
@@ -68,30 +68,29 @@
                 fixed="right"
                 label="操作"
                 width="150">
-                <template slot-scope="scope">
-                    <el-button type="text" size="small" @click="del(scope.row.id)">删除</el-button>
+                <template #default="{ row }">
+                    <el-button type="text" size="small" @click="del(row.id)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
 
         <div style="text-align: right; margin-top: 20px">
-            <el-pagination
-                background
-                :page-sizes="[10, 20, 50, 100]"
-                layout="total, sizes, prev, pager, next, jumper"
-                @current-change="load"
-                @size-change="sizeChange"
-                :current-page="tableData.page"
-                :page-size="tableData.length"
-                :total="tableData.totalSize">
-            </el-pagination>
+          <el-pagination
+              background
+              :page-sizes="[10, 20, 50, 100]"
+              layout="total, sizes, prev, pager, next, jumper"
+              v-model:current-page="tableData.page"
+              v-model:page-size="tableData.length"
+              @update:current-page="load"
+              @update:page-size="sizeChange"
+              :total="tableData.totalSize">
+          </el-pagination>
         </div>
 
         <div>
             <el-dialog
                 title="制作卡密"
-                :visible.sync="showCreate"
-                v-loading="loadingCreateKey"
+                v-model="showCreate"
                 width="50%">
                 <div>
                     <el-form ref="form" :model="createFrom" label-width="80px">
@@ -135,7 +134,12 @@
 </template>
 
 <script>
-let ITEM_LIST = require('../../assets/itemList.json');
+import api from "../../libs/api.js";
+
+let ITEM_LIST = import('../../assets/itemList.json')
+ITEM_LIST.then((a) => {
+  ITEM_LIST = a.default;
+})
 export default {
     name: "MgrKeys",
     data() {
@@ -160,7 +164,15 @@ export default {
                 face: null,
                 faceName: null
             },
-            itemOptions: []
+            itemOptions: [],
+            ser: api
+        }
+    },
+    watch: {
+        'createFrom.type'(val) {
+            this.createFrom.face = null;
+            this.createFrom.faceName = null;
+            this.itemOptions = [];
         }
     },
     methods:{

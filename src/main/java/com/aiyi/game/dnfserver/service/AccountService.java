@@ -50,7 +50,7 @@ public interface AccountService {
      * @param face
      *      mian zhi
      */
-    void recharge(int uid, int face);
+    void recharge(long uid, int face);
 
     /**
      * 获得用户详情
@@ -58,5 +58,5 @@ public interface AccountService {
      *      用户ID
      * @return
      */
-    AccountVO info(int uid);
+    AccountVO info(long uid);
 }

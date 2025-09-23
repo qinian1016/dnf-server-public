@@ -69,7 +69,7 @@ public class AccountController {
      * @return
      */
     @GetMapping("{uid}")
-    public AccountVO info(@PathVariable int uid){
+    public AccountVO info(@PathVariable long uid){
         return accountService.info(uid);
     }
 

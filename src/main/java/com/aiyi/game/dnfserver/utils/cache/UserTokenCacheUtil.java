@@ -41,7 +41,7 @@ public class UserTokenCacheUtil {
      * @param userId
      *      对应的用户ID
      */
-    public static void clear(int userId) {
+    public static void clear(long userId) {
         String token = CacheUtil.get(Key.as(CommonAttr.CACHE.USER_ID_TOKEN, String.valueOf(userId)), String.class);
         if (null != token){
             CacheUtil.expire(Key.as(CommonAttr.CACHE.USER_ID_TOKEN, String.valueOf(userId)));

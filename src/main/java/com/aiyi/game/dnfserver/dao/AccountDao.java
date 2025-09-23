@@ -65,7 +65,7 @@ public interface AccountDao {
             "        taiwan_login.`login_account_3` AS login_account\n" +
             "            ON  login_account.m_id = d_taiwan.`accounts`.UID\n" +
             "    WHERE\n" +
-            "        parent_uid=#{parentUid}\n" +
+            "        (parent_uid=#{parentUid} or UID=#{parentUid})\n" +
             "        <if test=\"null != account and '' != account\">AND accounts.accountname LIKE '%${account}%'</if>\n" +
             "        <if test=\"null != loginStatus\">AND login_account.login_status = #{loginStatus}</if>\n" +
             "        <if test=\"null != lastLoginDate\">AND login_account.last_login_date &lt;= #{lastLoginDate}</if>\n" +
@@ -74,7 +74,7 @@ public interface AccountDao {
     List<AccountVO> list(@Param("account") String account,
                          @Param("loginStatus") Boolean loginStatus,
                          @Param("lastLoginDate")Date lastLoginDate,
-                         @Param("parentUid") int parentUid,
+                         @Param("parentUid") long parentUid,
                          @Param("page") Integer page,
                          @Param("pageSize")Integer pageSize);
 
@@ -87,7 +87,7 @@ public interface AccountDao {
             "        taiwan_login.`login_account_3` AS login_account\n" +
             "            ON  login_account.m_id = d_taiwan.`accounts`.UID\n" +
             "    WHERE\n" +
-            "        parent_uid=#{parentUid}\n" +
+            "        (parent_uid=#{parentUid} or UID=#{parentUid})\n" +
             "        <if test=\"null != account and '' != account\">AND accounts.accountname LIKE '%${account}%'</if>\n" +
             "        <if test=\"null != loginStatus\">AND login_account.login_status = #{loginStatus}</if>\n" +
             "        <if test=\"null != lastLoginDate\">AND login_account.last_login_date &lt;= #{lastLoginDate}</if>\n" +
@@ -95,7 +95,7 @@ public interface AccountDao {
     int count(@Param("account") String account,
                @Param("loginStatus") Boolean loginStatus,
                @Param("lastLoginDate")Date lastLoginDate,
-               @Param("parentUid") int parentUid,
+               @Param("parentUid") long parentUid,
                @Param("page") Integer page,
                @Param("pageSize")Integer pageSize);
 

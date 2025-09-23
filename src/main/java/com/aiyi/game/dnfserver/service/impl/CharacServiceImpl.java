@@ -5,6 +5,7 @@ import com.aiyi.core.beans.Method;
 import com.aiyi.core.beans.ResultPage;
 import com.aiyi.core.beans.WherePrams;
 import com.aiyi.core.sql.where.C;
+import com.aiyi.core.util.thread.ThreadUtil;
 import com.aiyi.game.dnfserver.dao.AccountDao;
 import com.aiyi.game.dnfserver.dao.AccountVODao;
 import com.aiyi.game.dnfserver.dao.CharacInfoDao;
@@ -40,8 +41,12 @@ public class CharacServiceImpl implements CharacService {
     @Override
     public ResultPage<CharacInfo> list(Integer levMin, Integer levMax, Integer job,
                                        String name, String account, Integer page, Integer pageSize) {
-        if (null == levMin) levMin = 1;
-        if (null == levMax) levMax = 999;
+        if (null == levMin) {
+            levMin = 1;
+        }
+        if (null == levMax) {
+            levMax = 999;
+        }
         WherePrams where = Method.where(CharacInfo::getLev, C.DE, levMin).and(CharacInfo::getLev, C.XE, levMax);
         if (null != job){
             where.and(CharacInfo::getJob, C.EQ, job);
@@ -50,19 +55,34 @@ public class CharacServiceImpl implements CharacService {
         if (!StringUtils.isEmpty(name)){
             where.and(CharacInfo::getCharacName, C.LIKE, ChinaseUtil.toTraditional(name));
         }
+
+        AccountVO accountVO = accountVODao.get(ThreadUtil.getUserId());
         if (!StringUtils.isEmpty(account)){
-            List<Integer> ids = accountVODao.list(Method.where(AccountVO::getAccountname, C.LIKE, account))
+            WherePrams where1 = Method.where(AccountVO::getAccountname, C.LIKE, account);
+            if (!accountVO.isAdmin()){
+                where1.and(Method.where(AccountVO::getParentUid, C.EQ, ThreadUtil.getUserId())
+                        .or(AccountVO::getUid, C.EQ, ThreadUtil.getUserId()));
+            }
+            List<Long> ids = accountVODao.list(where1)
                     .stream().map(AccountVO::getUid).collect(Collectors.toList());
             if (ids.isEmpty()){
-                where.and(CharacInfo::getMid, C.EQ, null);
-            }else{
-                where.and(CharacInfo::getMid, C.IN, ids);
+                return new ResultPage<>(0, 0, 10, new ArrayList<>());
+            }
+            where.and(CharacInfo::getMid, C.IN, ids);
+        }else{
+            if (!accountVO.isAdmin()){
+                // 非超管只能查看自己和下级账号的角色
+                List<Long> collect = accountVODao.list(Method
+                                .where(AccountVO::getParentUid, C.EQ, ThreadUtil.getUserId())
+                                .or(AccountVO::getUid, C.EQ, ThreadUtil.getUserId()))
+                        .stream().map(AccountVO::getUid).collect(Collectors.toList());
+                where.and(CharacInfo::getMid, C.IN, collect);
             }
         }
         ResultPage<CharacInfo> list = characInfoDao.list(where, page, pageSize);
         if (!list.getList().isEmpty()){
-            Set<Integer> collect = list.getList().stream().map(CharacInfo::getMid).collect(Collectors.toSet());
-            Map<Integer, AccountVO> mapper = accountVODao.list(Method.where(AccountVO::getUid, C.IN, collect.toArray()))
+            Set<Long> collect = list.getList().stream().map(CharacInfo::getMid).collect(Collectors.toSet());
+            Map<Long, AccountVO> mapper = accountVODao.list(Method.where(AccountVO::getUid, C.IN, collect.toArray()))
                     .stream().collect(Collectors.toMap(AccountVO::getUid, a -> a));
             list.getList().forEach(characInfo -> {
                 if (mapper.containsKey(characInfo.getMid())){

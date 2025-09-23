@@ -21,7 +21,7 @@ import java.util.Date;
 public class CharacInfo extends PO {
 
     @FieldName(name = "m_id")
-    private int mid;
+    private long mid;
 
     @ID
     @FieldName(name = "charac_no")
@@ -167,11 +167,11 @@ public class CharacInfo extends PO {
         this.village = village;
     }
 
-    public int getMid() {
+    public long getMid() {
         return mid;
     }
 
-    public void setMid(int mid) {
+    public void setMid(long mid) {
         this.mid = mid;
     }
 

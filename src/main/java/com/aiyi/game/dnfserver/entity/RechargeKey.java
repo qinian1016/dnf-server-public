@@ -50,7 +50,7 @@ public class RechargeKey extends PO {
      * 使用账号ID
      */
     @FieldName(name = "use_uid")
-    private int useUid;
+    private long useUid;
 
     /**
      * 创建时间
@@ -133,11 +133,11 @@ public class RechargeKey extends PO {
         this.useAccount = useAccount;
     }
 
-    public int getUseUid() {
+    public long getUseUid() {
         return useUid;
     }
 
-    public void setUseUid(int useUid) {
+    public void setUseUid(long useUid) {
         this.useUid = useUid;
     }
 

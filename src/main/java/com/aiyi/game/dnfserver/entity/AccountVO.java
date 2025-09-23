@@ -18,7 +18,7 @@ public class AccountVO extends PO {
      */
     @ID
     @FieldName(name = "UID")
-    private Integer uid;
+    private long uid;
     /**
      * 账号
      */
@@ -81,11 +81,11 @@ public class AccountVO extends PO {
     @TempField
     private String validationIndex;
 
-    public Integer getUid() {
+    public long getUid() {
         return uid;
     }
 
-    public void setUid(Integer uid) {
+    public void setUid(long uid) {
         this.uid = uid;
     }
 

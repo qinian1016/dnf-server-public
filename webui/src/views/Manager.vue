@@ -44,14 +44,14 @@
 <!--                            <el-icon><magic-stick /></el-icon>-->
 <!--                            <span slot="title">活动管理</span>-->
 <!--                        </el-menu-item>-->
-                        <el-sub-menu index="3">
-                            <template #title>
-                                <el-icon><shopping-cart /></el-icon>
-                                <span>充值管理</span>
-                            </template>
-                            <el-menu-item index="/manager/keys">卡密管理</el-menu-item>
-<!--                            <el-menu-item index="/manager/k-logs">充值历史</el-menu-item>-->
-                        </el-sub-menu>
+<!--                        <el-sub-menu index="3">-->
+<!--                            <template #title>-->
+<!--                                <el-icon><shopping-cart /></el-icon>-->
+<!--                                <span>充值管理</span>-->
+<!--                            </template>-->
+<!--                            <el-menu-item index="/manager/keys">卡密管理</el-menu-item>-->
+<!--&lt;!&ndash;                            <el-menu-item index="/manager/k-logs">充值历史</el-menu-item>&ndash;&gt;-->
+<!--                        </el-sub-menu>-->
 <!--                        <el-menu-item index="/manager/databases">-->
 <!--                            <el-icon><data-board /></el-icon>-->
 <!--                           <span slot="title">数据库管理</span>-->

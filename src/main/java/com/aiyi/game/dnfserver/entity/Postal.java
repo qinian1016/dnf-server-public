@@ -58,7 +58,7 @@ public class Postal extends PO {
      * 物品附件ID
      */
     @FieldName(name = "item_id")
-    private int itemId;
+    private long itemId;
 
     /**
      * 物品数量
@@ -155,11 +155,11 @@ public class Postal extends PO {
         this.receiveCharacNo = receiveCharacNo;
     }
 
-    public int getItemId() {
+    public long getItemId() {
         return itemId;
     }
 
-    public void setItemId(int itemId) {
+    public void setItemId(long itemId) {
         this.itemId = itemId;
     }
 

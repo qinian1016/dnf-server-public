@@ -1,7 +1,9 @@
 package com.aiyi.game.dnfserver.service.impl;
 
+import com.aiyi.core.beans.Method;
 import com.aiyi.core.beans.ResultPage;
 import com.aiyi.core.exception.ValidationException;
+import com.aiyi.core.sql.where.C;
 import com.aiyi.core.util.thread.ThreadUtil;
 import com.aiyi.game.dnfserver.conf.CommonAttr;
 import com.aiyi.game.dnfserver.dao.AccountDao;
@@ -15,6 +17,7 @@ import com.aiyi.game.dnfserver.utils.String2Hex;
 import com.aiyi.game.dnfserver.utils.cache.CacheUtil;
 import com.aiyi.game.dnfserver.utils.cache.Key;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.Base64;
@@ -98,8 +101,19 @@ public class AccountServiceImpl implements AccountService {
             throw new ValidationException("该用户名已存在, 请更换其他用户名");
         }
 
+        if (StringUtils.hasText(accountVO.getRecommender()) && accountVO.getParentUid() == 0){
+            AccountVO recommender = accountVODao.get(Method.where(AccountVO::getAccountname,
+                    C.EQ, accountVO.getRecommender()));
+            if (null == recommender){
+                throw new ValidationException("推荐人账号不存在");
+            }
+            accountVO.setParentUid(recommender.getUid());
+        }
+
+
         accountVO.setPassword(MD5.getMd5(accountVO.getPassword()));
-        accountDao.insert(accountVO);
+        accountVODao.add(accountVO);
+//        accountDao.insert(accountVO);
 
         accountDao.execute("INSERT INTO d_taiwan.member_info(m_id, user_id)VALUES('" + accountVO.getUid() + "', '" + accountVO.getUid() + "')");
         accountDao.execute("INSERT INTO d_taiwan.member_white_account(m_id)VALUES('" + accountVO.getUid() + "')");

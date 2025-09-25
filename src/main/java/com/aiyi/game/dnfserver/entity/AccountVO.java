@@ -34,12 +34,12 @@ public class AccountVO extends PO {
     /**
      * VIP
      */
-    private String vip;
+    private String vip = "";
 
     private boolean admin;
 
     @FieldName(name = "parent_uid")
-    private int parentUid;
+    private long parentUid;
 
     @TempField
     private String valicode;
@@ -80,6 +80,12 @@ public class AccountVO extends PO {
 
     @TempField
     private String validationIndex;
+
+    /**
+     * 推荐人
+     */
+    @TempField
+    private String recommender;
 
     public long getUid() {
         return uid;
@@ -193,11 +199,19 @@ public class AccountVO extends PO {
         this.admin = admin;
     }
 
-    public int getParentUid() {
+    public long getParentUid() {
         return parentUid;
     }
 
-    public void setParentUid(int parentUid) {
+    public void setParentUid(long parentUid) {
         this.parentUid = parentUid;
+    }
+
+    public String getRecommender() {
+        return recommender;
+    }
+
+    public void setRecommender(String recommender) {
+        this.recommender = recommender;
     }
 }

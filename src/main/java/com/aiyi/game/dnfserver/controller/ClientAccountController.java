@@ -6,6 +6,8 @@ import com.aiyi.game.dnfserver.service.AccountService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 客户端账号操作Web接口
@@ -32,8 +34,10 @@ public class ClientAccountController {
 
     @PostMapping("api/v1/client/login")
     @NoLogin
-    public String loginClieng2(@RequestBody AccountVO accountVO){
-        return accountService.loginClient(accountVO, true);
+    public Map<String, String> loginClieng2(@RequestBody AccountVO accountVO){
+        Map<String, String> map = new HashMap<>();
+        map.put("token", accountService.loginClient(accountVO, true));
+        return map;
     }
 
     /**
@@ -46,5 +50,16 @@ public class ClientAccountController {
     public String register(AccountVO accountVO){
         accountService.register(accountVO);
         return "注册成功";
+    }
+
+    /**
+     * 注册
+     * @param accountVO
+     * @return
+     */
+    @PostMapping("api/v1/client/register")
+    @NoLogin
+    public void register2(@RequestBody AccountVO accountVO){
+        accountService.register(accountVO);
     }
 }

@@ -55,6 +55,7 @@ public interface AccountDao {
             "        accounts.password AS password,\n" +
             "        accounts.qq AS qq,\n" +
             "        accounts.vip AS vip,\n" +
+            "        accounts.parent_uid AS parentUid,\n" +
             "        login_account.login_ip AS loginIp,\n" +
             "        login_account.m_channel_no AS channelNo,\n" +
             "        login_account.last_login_date AS lastLoginDate,\n" +
@@ -106,6 +107,7 @@ public interface AccountDao {
             "        accounts.password AS password,\n" +
             "        accounts.qq AS qq,\n" +
             "        accounts.vip AS vip,\n" +
+            "        accounts.parent_uid AS parentUid,\n" +
             "        login_account.login_ip AS loginIp,\n" +
             "        login_account.m_channel_no AS channelNo,\n" +
             "        login_account.last_login_date AS lastLoginDate,\n" +

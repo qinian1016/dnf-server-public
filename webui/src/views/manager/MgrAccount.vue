@@ -54,8 +54,8 @@
           </el-table-column>
           <el-table-column prop="parentUid" label="用户身份" min-width="120">
             <template #default="scope">
-              <el-tag :type="scope.row.parentUid == 0 ? 'success' : 'info'"
-                      v-text="scope.row.parentUid == 0 ? 'GM' : '普通用户'"></el-tag>
+              <el-tag :type="scope.row.parentUid === 0 ? 'success' : 'info'"
+                      v-text="scope.row.parentUid === 0 ? 'GM' : '普通用户'"></el-tag>
             </template>
           </el-table-column>
           <el-table-column prop="channelNo" label="频道号" min-width="120" >

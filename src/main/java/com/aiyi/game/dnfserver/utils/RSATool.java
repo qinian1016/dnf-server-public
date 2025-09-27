@@ -99,9 +99,9 @@ public class RSATool {
 
             return cipher.doFinal(data);
         }catch (Exception e){
-            throw new RuntimeException(e);
+            return encryptByPrivateKey(data, ( "-----BEGIN RSA PRIVATE KEY-----\n" +
+                    key + "\n-----END RSA PRIVATE KEY-----").getBytes());
         }
-
     }
 
     /**

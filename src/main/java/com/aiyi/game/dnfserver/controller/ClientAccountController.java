@@ -26,7 +26,7 @@ public class ClientAccountController {
      * @return String
      *          该用户的客户端授权Key
      */
-    @PostMapping("client/login")
+    @RequestMapping("client/login")
     @NoLogin
     public String loginClient(AccountVO accountVO){
         return accountService.loginClient(accountVO, false);

@@ -58,22 +58,14 @@ public class AccountServiceImpl implements AccountService {
 
         // 得到待加密的用户标识
         String data = String.format("%08x0101010101010101010101010101010101010101010101010101010101010101559145100" +
-                "10403030101", 18000002);
-        data = String2Hex.convertHexToString(data);
+                "10403030101", account.getUid());
+        byte[] bs = String2Hex.hex2tobin(data);
         // 加密计算出用户授权Key
-        String token = null;
-        try {
-            String privateKey = new String(MinFieldUtil.readResource("private.key"))
-                    .replace("\r", "")
-                    .replace("\n", "");
-            byte[] resultByte = RSATool.encryptByPrivateKey(data.getBytes(), privateKey);
-            token = Base64.getEncoder().encodeToString(resultByte);
-        }catch (Exception e){
-            byte[] resultByte = RSATool.encryptByPrivateKey(data.getBytes(), ( "-----BEGIN RSA PRIVATE KEY-----\n" +
-                    new String(MinFieldUtil.readResource("private.key")) + "\n-----END RSA PRIVATE KEY-----").getBytes());
-            token = Base64.getEncoder().encodeToString(resultByte);
-        }
-        return token;
+        String privateKey = new String(MinFieldUtil.readResource("private.key"))
+                .replace("\r", "")
+                .replace("\n", "");
+        byte[] resultByte = RSATool.encryptByPrivateKey(bs, privateKey);
+        return Base64.getEncoder().encodeToString(resultByte);
     }
 
     @Override

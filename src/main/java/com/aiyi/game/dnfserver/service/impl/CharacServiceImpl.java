@@ -1,6 +1,7 @@
 package com.aiyi.game.dnfserver.service.impl;
 
-import com.aiyi.core.beans.LeftJoin;
+import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONObject;
 import com.aiyi.core.beans.Method;
 import com.aiyi.core.beans.ResultPage;
 import com.aiyi.core.beans.WherePrams;
@@ -9,11 +10,14 @@ import com.aiyi.core.util.thread.ThreadUtil;
 import com.aiyi.game.dnfserver.dao.AccountDao;
 import com.aiyi.game.dnfserver.dao.AccountVODao;
 import com.aiyi.game.dnfserver.dao.CharacInfoDao;
-import com.aiyi.game.dnfserver.entity.AccountVO;
-import com.aiyi.game.dnfserver.entity.CharacInfo;
+import com.aiyi.game.dnfserver.entity.*;
+import com.aiyi.game.dnfserver.entity.task.TaskType;
+import com.aiyi.game.dnfserver.pvf.PvfManager;
 import com.aiyi.game.dnfserver.service.CharacService;
+import com.aiyi.game.dnfserver.service.PostalService;
 import com.aiyi.game.dnfserver.utils.CharsetUtil;
 import com.aiyi.game.dnfserver.utils.ChinaseUtil;
+import com.xiaoyouma.dnf.parser.pvf.model.Pvf;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -37,6 +41,12 @@ public class CharacServiceImpl implements CharacService {
     private AccountDao accountDao;
     @Resource
     private AccountVODao accountVODao;
+
+    @Resource
+    private PvfManager pvfManager;
+
+    @Resource
+    private PostalService postalService;
 
     @Override
     public ResultPage<CharacInfo> list(Integer levMin, Integer levMax, Integer job,
@@ -140,5 +150,69 @@ public class CharacServiceImpl implements CharacService {
         characInfo.setCharacName(CharsetUtil.utf82latin1(CharsetUtil.latin12utf8(characInfo.getCharacName())));
 
         characInfoDao.update(characInfo);
+    }
+
+    @Override
+    public void overTasks(Long characId) {
+        List<TaskVO> tasks = listNoOverTasks(characId);
+        tasks.forEach(task -> {
+            if (task.getType().isCatFinish()){
+                // 直接完成
+                characInfoDao.execute("UPDATE `taiwan_cain`.`new_charac_quest` SET play_" + task.getNo() +
+                        "_trigger = 0 WHERE charac_no = ?", characId);
+            }else{
+                // 物品收集类任务，发邮件任务材料
+                for (TaskItemVO item: task.getItems()){
+                    Postal postal = new Postal();
+                    postal.setItemId(item.getId());
+                    postal.setAddInfo(item.getCount());
+                    postal.setReceiveCharacNo(characId + "");
+                    postal.setSendCharacName("Task materials");
+                    postalService.sendMail(postal);
+                }
+            }
+        });
+    }
+
+    @Override
+    public List<TaskVO> listNoOverTasks(Long characId) {
+        List<Map<String, Object>> maps = characInfoDao
+                .listBySql("SELECT * FROM `taiwan_cain`.`new_charac_quest` WHERE charac_no = ?", characId);
+        if (maps.isEmpty()){
+            return new ArrayList<>();
+        }
+        Pvf pvf = pvfManager.getPvf();
+        JSONObject questList = pvf.getScript("n_quest/quest.lst");
+        List<TaskVO> tasks = new ArrayList<>();
+        maps.forEach(map -> {
+            for (int i = 1; i <= 20; i++){
+                int taskId = Integer.parseInt(map.get("play_" + i).toString());
+                int trigger = Integer.parseInt(map.get("play_" + i + "_trigger").toString());
+                if (taskId > 0 && trigger > 0){
+                    TaskVO taskVO = new TaskVO();
+                    taskVO.setId(taskId);
+                    taskVO.setNo(i);
+                    tasks.add(taskVO);
+                    if (!questList.containsKey(taskId + "")){
+                        continue;
+                    }
+                    JSONObject script = pvf.getScript("n_quest/" + questList.getStr(taskId + ""));
+                    String typeStr = script.getJSONArray("[type]").getStr(0);
+                    taskVO.setType(TaskType.forType(typeStr));
+                    if (!taskVO.getType().isCatFinish()){
+                        List<TaskItemVO> taskItemS = new ArrayList<>();
+                        JSONArray jsonArray = script.getJSONArray("[int data]");
+                        for (int j = 0; j < jsonArray.size(); j++) {
+                            TaskItemVO taskItemVO = new TaskItemVO();
+                            taskItemVO.setId(jsonArray.getInt(j));
+                            taskItemVO.setCount(jsonArray.getInt(++j));
+                            taskItemS.add(taskItemVO);
+                        }
+                        taskVO.setItems(taskItemS);
+                    }
+                }
+            }
+        });
+        return tasks;
     }
 }

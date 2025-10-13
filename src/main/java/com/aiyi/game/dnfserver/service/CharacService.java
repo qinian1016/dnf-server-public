@@ -2,6 +2,7 @@ package com.aiyi.game.dnfserver.service;
 
 import com.aiyi.core.beans.ResultPage;
 import com.aiyi.game.dnfserver.entity.CharacInfo;
+import com.aiyi.game.dnfserver.entity.TaskVO;
 
 import java.util.List;
 
@@ -39,4 +40,19 @@ public interface CharacService {
      *      角色信息
      */
     void update(CharacInfo info);
+
+    /**
+     * 角色完成已接受的所有任务
+     * @param characId
+     *      角色ID
+     */
+    void overTasks(Long characId);
+
+    /**
+     * 列出角色未完成的任务列表
+     * @param characId
+     *      角色ID
+     * @return
+     */
+    List<TaskVO> listNoOverTasks(Long characId);
 }

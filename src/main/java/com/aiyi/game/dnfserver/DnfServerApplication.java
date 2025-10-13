@@ -12,4 +12,5 @@ public class DnfServerApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(DnfServerApplication.class, args);
 	}
+
 }

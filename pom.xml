@@ -69,6 +69,35 @@
 			<version>1.69</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.dnf.parser</groupId>
+			<artifactId>core</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/libs/dnf-parser-core-1.0.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>com.dnf.parser</groupId>
+			<artifactId>npk</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/libs/dnf-parser-npk-1.0.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>com.dnf.parser</groupId>
+			<artifactId>pvf</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/libs/dnf-parser-pvf-1.0.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>cn.hutool</groupId>
+			<artifactId>hutool-json</artifactId>
+			<version>5.8.26</version>
+		</dependency>
 
 		<dependency>
 			<groupId>com.github.houbb</groupId>
@@ -80,7 +109,6 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-
 	</dependencies>
 
 	<build>
@@ -88,6 +116,9 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<includeSystemScope>true</includeSystemScope>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

@@ -58,4 +58,14 @@ public class CharacInfoController {
         characService.update(info);
     }
 
+    /**
+     * 角色完成已接受的所有任务
+     * @param characId
+     *      角色ID
+     */
+    @PostMapping("{characId}/overTasks")
+    public void overTasks(@PathVariable Long characId){
+        characService.overTasks(characId);
+    }
+
 }

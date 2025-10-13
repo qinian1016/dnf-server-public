@@ -71,10 +71,11 @@
                 <el-table-column
                     fixed="right"
                     label="操作"
-                    width="170">
+                    width="200">
                     <template #default="scope">
                         <el-button link type="primary" size="small" @click="toEdit(scope.row)">编辑</el-button>
                         <el-button link type="primary" size="small" @click="sendMail(scope.row.characNo, scope.row.characName)">发送邮件</el-button>
+                        <el-button link type="primary" size="small" @click="overTasks(scope.row.characNo)">完成任务</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -246,7 +247,28 @@ export default {
             this.sendMailOption.id = id;
             this.sendMailOption.open = true;
             this.sendMailOption.receiveCharacName = name
-        }
+        },
+        overTasks(characNo) {
+          this.$confirm('确定要完成该角色的所有任务吗？', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.ser.post(`charac/${characNo}/overTasks`).then(res => {
+              this.$message({
+                type: 'success',
+                message: '操作成功!'
+              });
+            }).catch(err => {
+              this.$message({
+                type: 'error',
+                message: '操作失败: ' + err.message
+              });
+            });
+          }).catch(() => {
+            // 取消操作
+          });
+      }
     },
     mounted() {
         this.load();

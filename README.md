@@ -43,12 +43,9 @@ aliyun:
     endpoint: 这里不用管，预留，后续制作全自动更新版本时可能用得上
     bucket-name: 这里不用管，预留，后续制作全自动更新版本时可能用得上
 ````
-4. 编辑`/src/main/java/com/aiyi/game/dnfserver/service/rmt/RmtService.java`, 修改第67、68设置你的管理员账号密码，默认都是admin，请务必改为自己的，如下图:
-
-![rsa](https://github.com/onlyGuo/dnf-server-public/raw/main/doc/default-admin.png)
 
 
-5. 生成独属于自己的公私钥（长度:`2048bit` 格式:`PKCS#8`）,可以在这里在线生成：http://www.metools.info/code/c80.html 如下图:
+4. 生成独属于自己的公私钥（长度:`2048bit` 格式:`PKCS#8`）,可以在这里在线生成：http://www.metools.info/code/c80.html 如下图:
 
    -- 为什么不把公私钥直接内置到程序中而是强制你手动生成？因为公私钥时DOF服务端与客户端通信加密的基础，每个人用不同的密钥可以提高安全性，若都用统一的密钥，那么别有用心的人稍微使点手段就可以跳过密码验证直接登录你的私服，导致玩家账号密码形同虚设。
    
@@ -56,18 +53,18 @@ aliyun:
    
 ![rsa](https://github.com/onlyGuo/dnf-server-public/raw/main/doc/rsa.png)
 
-6. 用`notpad++`或`vs code`等一类的工具将公钥保存为`publickey.pem`并上传到服务器game目录.
+5. 用`notpad++`或`vs code`等一类的工具将公钥保存为`publickey.pem`并上传到服务器game目录.
 
 ![rsa](https://github.com/onlyGuo/dnf-server-public/raw/main/doc/rsa-pub.png)
 ![rsa](https://github.com/onlyGuo/dnf-server-public/raw/main/doc/rsa-pub-upload.png)
 
-7. 复制私钥内容（不要复制`-----BEGIN PRIVATE KEY-----`和`-----END PRIVATE KEY-----`这一类的头尾标识）到文件`src/main/resources/private.key` 替换里面的content，如下如:
+6. 复制私钥内容（不要复制`-----BEGIN PRIVATE KEY-----`和`-----END PRIVATE KEY-----`这一类的头尾标识）到文件`src/main/resources/private.key` 替换里面的content，如下如:
 
 ![rsa](https://github.com/onlyGuo/dnf-server-public/raw/main/doc/rsa-pri.png)
 
-8. 在根目录下执行cmd命令`mvn clean package`进行编译（初次编译会下载各种依赖包，会很慢，约30分钟，耐心等待，网络越好速度越快，若编译失败可以使用‘你懂得的上网方案’）。
+7. 在根目录下执行cmd命令`mvn clean package`进行编译（初次编译会下载各种依赖包，会很慢，约30分钟，耐心等待，网络越好速度越快，若编译失败可以使用‘你懂得的上网方案’）。
 
-9. 观察日志出现如下内容标识编译完成，编译成品为：`target/dnf-server-0.0.1-SNAPSHOT.jar`
+8. 观察日志出现如下内容标识编译完成，编译成品为：`target/dnf-server-0.0.1-SNAPSHOT.jar`
 ````
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
@@ -76,7 +73,8 @@ aliyun:
 [INFO] Finished at: 2021-04-29T16:14:55+08:00
 [INFO] ------------------------------------------------------------------------
 ````
-10. 服务器安装JDK8环境，将`target/dnf-server-0.0.1-SNAPSHOT.jar`上传至服务器
+9. 服务器安装JDK8环境，将`target/dnf-server-0.0.1-SNAPSHOT.jar`上传至服务器
+10. 在`dnf-server-0.0.1-SNAPSHOT.jar`同目录下, 上传Script.pvf.
 11. 在服务器jar包目录下执行: `nohup java -jar dnf-server-0.0.1-SNAPSHOT.jar &`
 12. 配置前端页面：https://github.com/onlyGuo/dnf-server-web-public.git
 
@@ -85,3 +83,6 @@ aliyun:
 1. 启动后在当前目录执行`tail -f logs/dnf.log`可以查看日志以便于排错。
 2. 结束本服务进程执行`pkill java`
 3. 联系QQ：719348277
+
+### 本地调试说明
+需将Script.pvf文件放到项目根目录, 方可完整调试, 打包后, 也需要将Script.pvf于Jar包放到一起部署(打包时, 不会直将Script.pvf打包到Jar包, 要手动放到同一个目录中, 此举是方便在不重新编译的情况下快速更新Script.pvf, 更新完Pvf文件后, 需要重启).

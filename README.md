@@ -12,7 +12,7 @@ spring-boot
 
 #### 安装过程
 
-1. 安装JDK1.8环境和Maven编译工具并配置环境变量
+1. 安装JDK24环境和Maven编译工具并配置环境变量
 2. 拉取本仓库代码。
 3. 修改你的数据库配置和短信配置：`src/main/resources/application.yml`:
 ```` yml

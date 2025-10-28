@@ -34,6 +34,9 @@ const routes = [
                 path: '/manager/notice',
                 component: () => import('../views/manager/MgrNotice.vue'),
             }, {
+                path: '/manager/pvf',
+                component: () => import('../views/manager/PvfManager.vue'),
+            }, {
                 path: '/manager/news',
                 component: () => import('../views/manager/MgrNews.vue'),
             }, {

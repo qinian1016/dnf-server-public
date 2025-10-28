@@ -32,6 +32,13 @@
                             <el-menu-item index="/manager/account">账号管理</el-menu-item>
                             <el-menu-item index="/manager/charac">角色管理</el-menu-item>
                         </el-sub-menu>
+                        <el-sub-menu index="2">
+                          <template #title>
+                            <el-icon><document /></el-icon>
+                            <span>资源管理</span>
+                          </template>
+                          <el-menu-item index="/manager/pvf">PVF管理</el-menu-item>
+                        </el-sub-menu>
 <!--                        <el-sub-menu index="2">-->
 <!--                            <template #title>-->
 <!--                                <el-icon><notebook /></el-icon>-->
@@ -69,11 +76,11 @@
 
 <script>
 import router from "../router/index.js";
-import {DataBoard, MagicStick, Notebook, ShoppingCart, User} from "@element-plus/icons-vue";
+import {DataBoard, MagicStick, Notebook, ShoppingCart, User, Document} from "@element-plus/icons-vue";
 
 export default {
     name: "Manager",
-    components: {DataBoard, ShoppingCart, MagicStick, Notebook, User, router},
+    components: {DataBoard, ShoppingCart, MagicStick, Notebook, User, router, Document},
     data() {
         return {
             activeIndex: '',

@@ -15,7 +15,6 @@ import com.aiyi.game.dnfserver.entity.task.TaskType;
 import com.aiyi.game.dnfserver.pvf.PvfManager;
 import com.aiyi.game.dnfserver.service.CharacService;
 import com.aiyi.game.dnfserver.service.PostalService;
-import com.aiyi.game.dnfserver.utils.CharsetUtil;
 import com.aiyi.game.dnfserver.utils.ChinaseUtil;
 import com.xiaoyouma.dnf.parser.pvf.model.Pvf;
 import org.springframework.stereotype.Service;
@@ -147,7 +146,6 @@ public class CharacServiceImpl implements CharacService {
         // 硬直、跳跃
         characInfo.setHitRecovery(info.getHitRecovery());
         characInfo.setJump(info.getJump());
-        characInfo.setCharacName(CharsetUtil.utf82latin1(CharsetUtil.latin12utf8(characInfo.getCharacName())));
 
         characInfoDao.update(characInfo);
     }

@@ -4,7 +4,6 @@ import com.aiyi.core.beans.ResultPage;
 import com.aiyi.game.dnfserver.conf.NoLogin;
 import com.aiyi.game.dnfserver.entity.CharacInfo;
 import com.aiyi.game.dnfserver.service.CharacService;
-import com.aiyi.game.dnfserver.utils.CharsetUtil;
 import com.aiyi.game.dnfserver.utils.ChinaseUtil;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,7 +35,7 @@ public class CharacInfoController {
         }
         ResultPage<CharacInfo> list = characService.list(minLev, maxLevel, job, name, account, page, pageSize);
         for (CharacInfo info: list.getList()){
-            CharsetUtil.latin12utf8(info);
+            ChinaseUtil.toSimple(info);
         }
         return list;
     }

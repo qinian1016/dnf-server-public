@@ -6,6 +6,14 @@
 
 本想直接编译出一个现成的jar包给大家用，但实际考虑后还是决定开源出来，毕竟即使从源码出发，整体的安装过程也不算复杂，并且某些时候水很深。
 
+如果你是第一次使用本项目, 你需要在DOF数据库中执行以下SQL语句来初始化必要的数据表结构:
+
+```sql
+ALTER TABLE `d_taiwan`.`accounts`
+ADD COLUMN `admin` INT(10) COMMENT '是否是超管',
+ADD COLUMN `parent_uid` INT(10) COMMENT '上级用户ID';
+```
+
 #### 软件架构
 spring-boot
 

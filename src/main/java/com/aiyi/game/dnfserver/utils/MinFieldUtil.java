@@ -34,6 +34,26 @@ public class MinFieldUtil {
         }
     }
 
+
+    /**
+     * 写文件
+     * @param file
+     *      文件名
+     * @param content
+     *      文件内容
+     */
+    public static void writeFile(String file, byte[] content) {
+        try (FileOutputStream out = new FileOutputStream(file)){
+            out.write(content);
+        }catch (IOException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void cpyFile(String s, String s1) {
+        writeFile(s1, readFile(s));
+    }
+
     /**
      * 本地资源文件缓存实体
      */
@@ -117,5 +137,13 @@ public class MinFieldUtil {
         sourceCacheMap.put(filePath, cacheByte);
 
         return result;
+    }
+
+    public static int getFileSizeKB(String filePath){
+        File file = new File(filePath);
+        if (!file.exists() || !file.isFile()){
+            return 0;
+        }
+        return (int)(file.length() / 1024);
     }
 }

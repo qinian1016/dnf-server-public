@@ -245,8 +245,9 @@ export default {
         },
         sendMail(id, name){
             this.sendMailOption.id = id;
-            this.sendMailOption.open = true;
             this.sendMailOption.receiveCharacName = name
+            this.sendMailOption.open = true;
+          console.log(this.sendMailOption)
         },
         overTasks(characNo) {
           this.$confirm('确定要完成该角色的所有任务吗？', '提示', {

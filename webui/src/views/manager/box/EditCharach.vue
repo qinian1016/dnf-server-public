@@ -36,7 +36,7 @@ export default {
   },
   data(){
     return {
-      
+
     }
   },
   methods: {
@@ -58,7 +58,7 @@ export default {
 <div>
   <el-dialog title="编辑角色属性" v-model="options.show">
     <div style="margin-bottom: 20px; font-size: 14px; margin-top: -10px">
-      PS: 修改角色属性时，请确保当前角色一退出登录，否则修改无效。
+      PS: 修改角色属性时，请确保当前角色已退出登录，否则修改无效。
     </div>
     <el-form label-width="50">
       <div class="form-classify">

@@ -27,23 +27,10 @@
 <!--                    </el-table>-->
 <!--                    <el-button style="width: 100%">+ 添加附件</el-button>-->
 <!--                  </el-form-item>-->
-                    <el-form-item label="物品名称">
-                        <el-select style="width: calc(100% - 150px)"
-                                v-model="form.itemId"
-                                filterable
-                                remote
-                                placeholder="物品太多，请输入关键词搜索"
-                                :remote-method="searchItem"
-                                :loading="searchLoading">
-                            <el-option
-                                    v-for="item in itemOptions"
-                                    :key="item.code"
-                                    :label="item.name"
-                                    :value="item.code">
-                            </el-option>
-                        </el-select>
-                        <el-input-number style="width: 150px" v-model="form.addInfo" :min="1" :max="100000" label="数量"></el-input-number>
-                    </el-form-item>
+                  <el-form-item label="物品名称">
+                    <item-selector v-model="form.itemId" eager-resolve style="width: calc(100% - 150px)"></item-selector>
+                    <el-input-number style="width: 150px" v-model="form.addInfo" :min="1" :max="100000" label="数量"></el-input-number>
+                  </el-form-item>
 
                   <el-row>
                     <el-col :span="12">
@@ -86,15 +73,11 @@
 </template>
 
 <script>
-// let ITEM_LIST = require('../../../assets/itemList.json');
 import api from "../../../libs/api.js";
-
-let ITEM_LIST = import('../../../assets/itemList.json')
-ITEM_LIST.then((a) => {
-  ITEM_LIST = a.default;
-})
+import ItemSelector from "../../../components/ItemSelector.vue";
 export default {
     name: "SendEmail",
+  components: {ItemSelector},
     props: {
         option: Object,
     },
@@ -120,7 +103,8 @@ export default {
             ],
           ser: api
         }
-    },methods: {
+    },
+    methods: {
         onsubmit(){
             this.form.receiveCharacNo = this.option.id;
             if (!this.form.itemId){
@@ -152,27 +136,6 @@ export default {
                 this.loading = false;
             })
         },
-        /**
-         * 远程搜索物品列表
-         * @param query
-         */
-        searchItem(query){
-            this.searchLoading = true;
-            this.itemOptions = [];
-            setTimeout(() => {
-                let count = 0;
-                for (let i in ITEM_LIST){
-                    if (count === 100){
-                        break;
-                    }
-                    if(ITEM_LIST[i].name.indexOf(query) !== -1){
-                        this.itemOptions.push(ITEM_LIST[i]);
-                        count ++;
-                    }
-                }
-                this.searchLoading = false;
-            });
-        }
     }
 }
 </script>

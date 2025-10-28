@@ -17,7 +17,7 @@ mybatis:
 logging:
   file: logs/dnf.log
   level:
-    com.aiyi: debug
+    com.aiyi: INFO
 
 aliyun:
   access-key-id: 这里填写你从阿里云申请的access-key-id 否则注册时无法发送短信

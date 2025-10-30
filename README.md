@@ -91,10 +91,10 @@ aliyun:
 [INFO] Finished at: 2021-04-29T16:14:55+08:00
 [INFO] ------------------------------------------------------------------------
 ````
-9. 服务器安装JDK8环境，将`target/dnf-server-0.0.1-SNAPSHOT.jar`上传至服务器
+9. 服务器安装JDK24环境，将`target/dnf-server-0.0.1-SNAPSHOT.jar`上传至服务器
 10. 在`dnf-server-0.0.1-SNAPSHOT.jar`同目录下, 上传Script.pvf.
 11. 在服务器jar包目录下执行: `nohup java -jar dnf-server-0.0.1-SNAPSHOT.jar &`
-12. 配置前端页面：https://github.com/onlyGuo/dnf-server-web-public.git
+12. 配置前端页面， 参考这里的步骤，但无需拉取项目，本仓库已经集成前段代码了，再webui目录中：https://github.com/onlyGuo/dnf-server-web-public.git
 
 #### 使用说明
 

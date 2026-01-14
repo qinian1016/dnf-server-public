@@ -8,3 +8,4 @@ logs/
 /dnf-server-web
 /Script.pvf
 /Script_backup.pvf
+/ImagePacks2/*.npk

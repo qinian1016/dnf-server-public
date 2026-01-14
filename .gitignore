@@ -6,3 +6,5 @@ target/
 *.log
 logs/
 /dnf-server-web
+/Script.pvf
+/Script_backup.pvf

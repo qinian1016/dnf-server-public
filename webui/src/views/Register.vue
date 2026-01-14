@@ -7,8 +7,8 @@
             <h1>注册账号</h1>
 
             <el-form ref="form" :model="form" label-width="80px">
-                <el-form-item label="电子邮箱">
-                    <el-input v-model="form.accountname" placeholder="请输入电子邮箱"></el-input>
+                <el-form-item label="账号">
+                    <el-input v-model="form.accountname" placeholder="请输入账号"></el-input>
                 </el-form-item>
                 <el-form-item label="图形码">
                     <el-input v-model="form.valicode" placeholder="请输入图形验证码" style="width: calc(100% - 100px)"></el-input>
@@ -25,6 +25,9 @@
                 <el-form-item label="确认密码">
                     <el-input v-model="form.checkPassword" placeholder="请重新输入登录密码" type="password"></el-input>
                 </el-form-item>
+              <el-form-item label="授权码">
+                <el-input v-model="form.authCode" placeholder="用于注册GM身份" type="password"></el-input>
+              </el-form-item>
 
 <!--                <p style="text-align: center; color: gray">-->
 <!--                    注册后用手机号码即可登录！-->
@@ -34,11 +37,12 @@
 <!--                <br/>游戏中遇到自称官方人员时，请确认对方是否佩戴<span style="font-weight: bold; color: black;">[DNF运营商]</span>称号。-->
 <!--                <br/><br/>-->
 
+
               <p style="text-align: center; color: gray">
-                注册后用邮箱即可登录！
+                注册后用该账号即可登录！
               </p>
-              <br/>同时，该账号也是GM后台账号，您可以通过上方的“管理员入口”进入GM后台。
-              <br/>所有物品均可通过后台直接获得，同时，您还可以在GM后台创建您朋友的小号一起在游戏里开黑，n祝您游戏愉快！
+              <br/>同时，该账号既是游戏账号也是GM后台账号，您可以通过上方的“管理员入口”进入GM后台。
+              <br/>所有物品均可通过后台直接获得，同时，当有朋友在登录器中注册并在邀请人中填写您的帐号时，您将自动成为他的管理员，您也可以利用您的GM权限进行分销，祝您游戏愉快！
 
               <br/><br/>
 
@@ -64,7 +68,8 @@ export default {
                 smsCode: '',
                 password: '',
                 checkPassword: '',
-                validationIndex: this.uuid()
+                validationIndex: this.uuid(),
+                authCode: ''
             },
             sendBtnText: '发送'
         }
@@ -75,7 +80,7 @@ export default {
                 return;
             }
             if (!this.form.accountname){
-                this.$message.error("请填写邮箱");
+                this.$message.error("请填写账号");
                 return;
             }
             if (!this.form.valicode){
@@ -106,7 +111,7 @@ export default {
         },
         register(){
             if (!this.form.accountname){
-                this.$message.error("请填写邮箱");
+                this.$message.error("请填写账号");
                 return;
             }
             if (this.form.checkPassword !== this.form.password){

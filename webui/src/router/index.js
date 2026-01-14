@@ -20,6 +20,10 @@ const routes = [
         component: () => import('../views/Recharge.vue'),
     },
     {
+        path: '/authcode',
+        component: () => import('../views/AuthCode.vue'),
+    },
+    {
         path: '/manager',
         component: () => import('../views/Manager.vue'),
         redirect: '/manager/account',

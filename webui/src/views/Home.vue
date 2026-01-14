@@ -9,10 +9,10 @@
         </div>
 
         <div style="text-align: center">
-            <h1 style="font-size: 50px; color: white; margin-top: 100px">70版本，经典再现</h1>
+            <h1 style="font-size: 50px; color: white; margin-top: 100px">60版本，经典再现</h1>
             <div style="color: white; text-shadow: 2px 2px 3px #2c3e50; margin-top: 60px;">本游戏来自台湾Garena公司停止运营后的最后一个版本，主要针对台服玩家，与中国腾讯无任何直接关系。</div>
             <div style="color: white; text-shadow: 2px 2px 3px #2c3e50; margin-top: 30px;">如果您是国服用户，请自觉删除，以避免相关纠纷。</div>
-            <a href="http://gsk-dnf-update.oss-cn-beijing.aliyuncs.com/%E5%9C%B0%E4%B8%8B%E5%9F%8E%E4%B8%8E%E5%8B%87%E5%A3%AB.zip" class="download-btn">下载游戏</a>
+            <a href="https://oss.icoding.ink/.inner/dnf/dnf.zip" class="download-btn">下载游戏</a>
             <a href="javascript:;" @click="go('/register')" class="download-btn">账号注册</a>
         </div>
 

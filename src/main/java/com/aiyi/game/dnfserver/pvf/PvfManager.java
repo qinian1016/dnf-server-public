@@ -47,6 +47,9 @@ public class PvfManager {
         JSONObject script = pvf.getScript("equipment/equipment.lst");
         for (String key : script.keySet()) {
             String str = script.getStr(key);
+            if (str.startsWith("/")){
+                str = str.substring(1);
+            }
             JSONObject equipmentScript = pvf.getScript("equipment/" + str);
             Equipment equipment = Equipment.forScript(equipmentScript);
             equipment.setId(Integer.parseInt(key));
@@ -67,7 +70,11 @@ public class PvfManager {
         JSONObject script = pvf.getScript("stackable/stackable.lst");
         for (String key : script.keySet()) {
             String str = script.getStr(key);
-            JSONObject stackableScript = pvf.getScript("stackable/" + str);
+            String path = "stackable/" + str;
+            if (str.startsWith("/")){
+                path = "stackable" + str;
+            }
+            JSONObject stackableScript = pvf.getScript(path);
             Stackable stackable = Stackable.forScript(stackableScript);
             stackable.setId(Integer.parseInt(key));
             if ("未命名".equals(stackable.getName()) || stackable.getName().contains("找不到代码") || stackable.getName().trim().isEmpty()){

@@ -24,6 +24,8 @@ public interface AccountService {
      * 注册
      * @param accountVO
      */
+    void register(AccountVO accountVO, boolean isAdmin);
+
     void register(AccountVO accountVO);
 
     /**

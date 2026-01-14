@@ -25,6 +25,8 @@ public enum EquipmentType {
     support("[support]", "辅助装备", false),
     magicStone("[magic stone]", "魔法石", false),
 
+    weaponAvatar("[weapon avatar]", "武器(装扮)", true),
+    auroraAvatar("[aurora avatar]", "光环(装扮)", true),
     hatAvatar("[hat avatar]", "帽子(装扮)", true),
     hairAvatar("[hair avatar]", "头发(装扮)", true),
     breastAvatar("[breast avatar]", "胸部(装扮)", true),

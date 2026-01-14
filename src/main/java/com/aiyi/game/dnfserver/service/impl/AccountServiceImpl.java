@@ -8,7 +8,10 @@ import com.aiyi.core.util.thread.ThreadUtil;
 import com.aiyi.game.dnfserver.conf.CommonAttr;
 import com.aiyi.game.dnfserver.dao.AccountDao;
 import com.aiyi.game.dnfserver.dao.AccountVODao;
+import com.aiyi.game.dnfserver.dao.AdminTempPasswordDao;
+import com.aiyi.game.dnfserver.dao.GameManagerAuthKeyDao;
 import com.aiyi.game.dnfserver.entity.AccountVO;
+import com.aiyi.game.dnfserver.entity.GameManagerAuthKey;
 import com.aiyi.game.dnfserver.service.AccountService;
 import com.aiyi.game.dnfserver.utils.MD5;
 import com.aiyi.game.dnfserver.utils.MinFieldUtil;
@@ -17,6 +20,7 @@ import com.aiyi.game.dnfserver.utils.String2Hex;
 import com.aiyi.game.dnfserver.utils.cache.CacheUtil;
 import com.aiyi.game.dnfserver.utils.cache.Key;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -35,6 +39,12 @@ public class AccountServiceImpl implements AccountService {
 
     @Resource
     private AccountVODao accountVODao;
+
+    @Resource
+    private GameManagerAuthKeyDao gameManagerAuthKeyDao;
+
+    @Resource
+    private AdminTempPasswordDao adminTempPasswordDao;
 
     @Override
     public String loginClient(AccountVO accountVO, boolean ok) {
@@ -69,7 +79,8 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void register(AccountVO accountVO) {
+    @Transactional(rollbackFor = Exception.class)
+    public void register(AccountVO accountVO, boolean isAdmin) {
         if (null == accountVO.getAccountname() || accountVO.getAccountname().trim().isEmpty()){
             throw new ValidationException("用户名不能为空");
         }
@@ -92,6 +103,30 @@ public class AccountServiceImpl implements AccountService {
             throw new ValidationException("该用户名已存在, 请更换其他用户名");
         }
 
+        if (!isAdmin){
+            if (StringUtils.isEmpty(accountVO.getRecommender())){
+                throw new ValidationException("请填写推荐人账号");
+            }
+        }
+        if (isAdmin){
+            if (StringUtils.isEmpty(accountVO.getAuthCode())){
+                throw new ValidationException("请填写授权码才能注册GM");
+            }
+            GameManagerAuthKey authKey = gameManagerAuthKeyDao.get(Method
+                    .where(GameManagerAuthKey::getAuthCode, C.EQ, accountVO.getAuthCode()));
+            if (null == authKey){
+                throw new ValidationException("授权码不正确或已失效");
+            }
+            if (authKey.getUseCount() >= authKey.getMaxCount()){
+                throw new ValidationException("授权码不正确或已失效");
+            }
+
+            authKey.setUseCount(authKey.getUseCount() + 1);
+            gameManagerAuthKeyDao.update(authKey);
+        }
+
+
+
         if (StringUtils.hasText(accountVO.getRecommender()) && accountVO.getParentUid() == 0){
             AccountVO recommender = accountVODao.get(Method.where(AccountVO::getAccountname,
                     C.EQ, accountVO.getRecommender()));
@@ -112,6 +147,7 @@ public class AccountServiceImpl implements AccountService {
         accountDao.execute("INSERT INTO taiwan_billing.cash_cera(account, cera,mod_tran, mod_date, reg_date)VALUES('" + accountVO.getUid() + "', 1000, 0, NOW(), NOW())");
         accountDao.execute("INSERT INTO taiwan_billing.cash_cera_point(account, cera_point,mod_date, reg_date)VALUES('" + accountVO.getUid() + "', 0, NOW(), NOW())");
         accountDao.execute("INSERT INTO taiwan_cain_2nd.member_avatar_coin(m_id)VALUES('" + accountVO.getUid() + "')");
+
         /*
          *# 充值10点券
          * update taiwan_billing.cash_cera set cera = cera + 10 where account='1';
@@ -132,6 +168,12 @@ public class AccountServiceImpl implements AccountService {
          *
          */
 
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void register(AccountVO accountVO) {
+        register(accountVO, false);
     }
 
     @Override

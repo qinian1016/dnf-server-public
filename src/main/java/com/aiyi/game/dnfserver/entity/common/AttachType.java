@@ -14,6 +14,7 @@ package com.aiyi.game.dnfserver.entity.common;
 public enum AttachType implements HasDesc {
 
     trade("[trade]", "不可交易"),
+    tradeLimit("[trade limit]", "有限制交易"),
     free("[free]", "自由交易"),
     sealing("[sealing]", "封装"),
     account("[account]", "账号绑定"),
@@ -37,12 +38,15 @@ public enum AttachType implements HasDesc {
     }
 
     public static AttachType forType(String type){
+        if (type.endsWith("]]")){
+            type = type.substring(0, type.length() -1);
+        }
         for (AttachType t : AttachType.values()){
             if (t.type.equals(type)){
                 return t;
             }
         }
-        throw new RuntimeException("no t found TypeTag");
+        throw new RuntimeException("no t found TypeTag:" + type);
     }
 
     public String getType() {

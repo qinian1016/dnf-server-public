@@ -10,6 +10,7 @@ import java.util.Date;
 
 /**
  * DNF用户实体
+ * @author gsk
  */
 @TableName(name = "d_taiwan.`accounts`")
 public class AccountVO extends PO {
@@ -86,6 +87,9 @@ public class AccountVO extends PO {
      */
     @TempField
     private String recommender;
+
+    @TempField
+    private String authCode;
 
     public long getUid() {
         return uid;
@@ -213,5 +217,13 @@ public class AccountVO extends PO {
 
     public void setRecommender(String recommender) {
         this.recommender = recommender;
+    }
+
+    public String getAuthCode() {
+        return authCode;
+    }
+
+    public void setAuthCode(String authCode) {
+        this.authCode = authCode;
     }
 }

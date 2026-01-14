@@ -58,7 +58,7 @@ public class AccountController {
     @PostMapping
     @NoLogin
     public ResultBean register(@RequestBody AccountVO accountVO){
-        accountService.register(accountVO);
+        accountService.register(accountVO, true);
         return ResultBean.success();
     }
 

@@ -3,6 +3,7 @@ package com.aiyi.game.dnfserver.entity.common;
 import cn.hutool.json.JSONObject;
 import com.aiyi.game.dnfserver.entity.equipment.EquipmentType;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.github.houbb.opencc4j.util.ZhConverterUtil;
 
 import java.util.ArrayList;
@@ -99,12 +100,34 @@ public class Item {
             this.stackLimit = 1;
         }
         // usable jobs
-        this.usableJobs = script.getJSONArray("[usable job]").toList(String.class).stream()
-                .map(UsableJob::forJobKey)
-                .collect(Collectors.toList());
-        this.name = JSON.parseArray(this.name).getString(0);
-        this.description = JSON.parseArray(this.description).getString(0);
-        this.explain = JSON.parseArray(this.explain).getString(0);
+        try {
+            this.usableJobs = script.getJSONArray("[usable job]").toList(String.class).stream()
+                    .map(UsableJob::forJobKey)
+                    .collect(Collectors.toList());
+        }catch (Exception e){
+            this.usableJobs = new ArrayList<>();
+            this.usableJobs.add(UsableJob.all);
+        }
+        JSONArray objects2 = JSON.parseArray(this.name);
+        if (null != objects2 && !objects2.isEmpty()) {
+            this.name = objects2.getString(0);
+        }else {
+            this.name = "未命名";
+        }
+
+        JSONArray objects = JSON.parseArray(this.description);
+        if (null != objects && !objects.isEmpty()) {
+            this.description = objects.getString(0);
+        }else{
+            this.description = "";
+        }
+
+        JSONArray objects1 = JSON.parseArray(this.explain);
+        if (null != objects1 && !objects1.isEmpty()) {
+            this.explain = objects1.getString(0);
+        }else {
+            this.explain = "";
+        }
     }
 
     public int getId() {

@@ -43,7 +43,7 @@ public interface AccountService {
      * @return
      */
     ResultPage<AccountVO> list(String account, Boolean loginStatus,
-                               Date lastLoginDate, int page, int pageSize);
+                               Date lastLoginDate, Date laseLoginDateEnd, int page, int pageSize);
 
     /**
      * chong zhi

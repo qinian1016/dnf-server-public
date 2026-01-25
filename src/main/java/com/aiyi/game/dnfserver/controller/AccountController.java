@@ -40,12 +40,12 @@ public class AccountController {
      */
     @GetMapping
     public ResultPage<AccountVO> list(String account, Boolean loginStatus,
-                                      Date lastLoginDate, Integer page,
+                                      Date lastLoginDate, Date lastLoginDateEnd, Integer page,
                                       Integer pageSize){
         if (null == page) page = 1;
         if (null == pageSize) pageSize = 10;
 
-        return accountService.list(account, loginStatus, lastLoginDate,
+        return accountService.list(account, loginStatus, lastLoginDate, lastLoginDateEnd,
                 page, pageSize);
     }
 

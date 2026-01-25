@@ -1,7 +1,6 @@
 package com.aiyi.game.dnfserver.entity.common;
 
 import cn.hutool.json.JSONObject;
-import com.aiyi.game.dnfserver.entity.equipment.EquipmentType;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.github.houbb.opencc4j.util.ZhConverterUtil;
@@ -69,6 +68,8 @@ public class Item {
      */
     private int stackLimit;
 
+    private ItemIcon icon;
+
     public void parseForScript(JSONObject script){
         if (script.containsKey("[rarity]")){
             this.rarity = script.getJSONArray("[rarity]").getInt(0);
@@ -127,6 +128,18 @@ public class Item {
             this.explain = objects1.getString(0);
         }else {
             this.explain = "";
+        }
+
+        if (script.containsKey("[icon]") && !script.getJSONArray("[icon]").isEmpty()){
+            JSONArray arrays = JSON.parseArray(script.getStr("[icon]"));
+            ItemIcon itemIcon = new ItemIcon();
+            itemIcon.setPath(arrays.getString(0).toLowerCase());
+            if (arrays.size() >= 2){
+                itemIcon.setIndex(arrays.getIntValue(1));
+            }
+            this.icon = itemIcon;
+        } else {
+            this.icon = null;
         }
     }
 
@@ -219,5 +232,9 @@ public class Item {
             strings.add(usableJob.getJobDesc());
         }
         return strings;
+    }
+
+    public ItemIcon getIcon() {
+        return icon;
     }
 }

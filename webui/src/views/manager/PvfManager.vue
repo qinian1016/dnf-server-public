@@ -1,6 +1,7 @@
 <script setup>
 import {computed, ref} from "vue";
 import api from "../../libs/api.js";
+import ItemImg from "../../components/ItemImg.vue";
 const pvfInfo = ref({
   size: "0 MB",
   equipmentCount: 0,
@@ -194,19 +195,34 @@ const handleStackableSizeChange = (newSize) => {
         </div>
         <el-table :data="thisEquipmentData">
           <el-table-column prop="id" label="ID" width="120" fixed/>
-          <el-table-column prop="rarity" label="稀有度" width="80" fixed>
+          <el-table-column prop="name" label="名称">
             <template #default="scope">
-              <span v-if="scope.row.rarity === 0">普通</span>
-              <span v-if="scope.row.rarity === 1">高级</span>
-              <span v-if="scope.row.rarity === 2">稀有</span>
-              <span v-if="scope.row.rarity === 3">神器</span>
-              <span v-if="scope.row.rarity === 4">史诗</span>
-              <span v-if="scope.row.rarity === 5">勇者</span>
-              <span v-if="scope.row.rarity === 6">神话</span>
+              <div style="display: flex; align-items: center;">
+                <item-img :icon="scope.row.icon" :rarity="scope.row.rarity"/>
+                <div style="flex: 1;margin-left: 8px;height: 32px">
+                  <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap; line-height: 20px; height: 20px;">
+                    <span v-if="scope.row.rarity === 0">{{scope.row.name}}</span>
+                    <span style="color: #15a9e8" v-if="scope.row.rarity === 1">{{scope.row.name}}</span>
+                    <span style="color: #4200b5" v-if="scope.row.rarity === 2">{{scope.row.name}}</span>
+                    <span style="color: #db00fd" v-if="scope.row.rarity === 3">{{scope.row.name}}</span>
+                    <span style="color: #fdb500" v-if="scope.row.rarity === 4">{{scope.row.name}}</span>
+                    <span style="color: #fd0000" v-if="scope.row.rarity === 5">{{scope.row.name}}</span>
+                    <!-- 五彩色 -->
+                    <span style="
+                          background: -webkit-linear-gradient(45deg, #db00fd, #f474fb, #7300ff, #5ef2f6);
+                          -webkit-background-clip: text;
+                          -webkit-text-fill-color: transparent;
+                          "
+                          v-if="scope.row.rarity === 6">{{scope.row.name}}</span>
+                  </div>
+                  <div style="font-size: 10px; line-height: 10px; height: 10px">
+                    Lv.{{scope.row.minimumLevel}} {{scope.row.equipmentTypeStr}}
+                  </div>
+                </div>
+              </div>
             </template>
           </el-table-column>
-          <el-table-column prop="minimumLevel" label="等级" width="55" fixed/>
-          <el-table-column prop="attachType" label="交易类型" width="80" fixed>
+          <el-table-column prop="attachType" label="交易类型" width="100">
             <template #default="scope">
               <span v-if="scope.row.attachType === 'trade'" style="color: red">不可交易</span>
               <span v-if="scope.row.attachType === 'free'" style="color: #008cff">自由交易</span>
@@ -216,27 +232,9 @@ const handleStackableSizeChange = (newSize) => {
               <span v-if="scope.row.attachType === 'sealingTrade'" style="color: red">不可交易</span>
             </template>
           </el-table-column>
-          <el-table-column prop="stackLimit" label="携带上限" width="80" fixed/>
-          <el-table-column prop="usableJobsStr" label="职业" width="120" fixed/>
-          <el-table-column prop="name" label="名称" width="150" show-overflow-tooltip>
-            <template #default="scope">
-              <span v-if="scope.row.rarity === 0">{{scope.row.name}}</span>
-              <span style="color: #15a9e8" v-if="scope.row.rarity === 1">{{scope.row.name}}</span>
-              <span style="color: #4200b5" v-if="scope.row.rarity === 2">{{scope.row.name}}</span>
-              <span style="color: #db00fd" v-if="scope.row.rarity === 3">{{scope.row.name}}</span>
-              <span style="color: #fdb500" v-if="scope.row.rarity === 4">{{scope.row.name}}</span>
-              <span style="color: #fd0000" v-if="scope.row.rarity === 5">{{scope.row.name}}</span>
-              <!-- 五彩色 -->
-              <span style="
-                          background: -webkit-linear-gradient(45deg, #db00fd, #f474fb, #7300ff, #5ef2f6);
-                          -webkit-background-clip: text;
-                          -webkit-text-fill-color: transparent;
-                          "
-                    v-if="scope.row.rarity === 6">{{scope.row.name}}</span>
-            </template>
-          </el-table-column>
+          <el-table-column prop="stackLimit" label="携带上限" width="80"/>
+          <el-table-column prop="usableJobsStr" label="职业" width="200"/>
           <el-table-column prop="explain" show-overflow-tooltip label="面板" />
-          <el-table-column prop="equipmentTypeStr" label="类型" width="120" fixed />
         </el-table>
         <el-pagination
           style="margin-top: 20px; text-align: right;"

@@ -69,12 +69,14 @@ public interface AccountDao {
             "        (parent_uid=#{parentUid} or UID=#{parentUid})\n" +
             "        <if test=\"null != account and '' != account\">AND accounts.accountname LIKE '%${account}%'</if>\n" +
             "        <if test=\"null != loginStatus\">AND login_account.login_status = #{loginStatus}</if>\n" +
-            "        <if test=\"null != lastLoginDate\">AND login_account.last_login_date &lt;= #{lastLoginDate}</if>\n" +
+            "        <if test=\"null != lastLoginDate\">AND login_account.last_login_date &gt;= #{lastLoginDate}</if>\n" +
+            "        <if test=\"null != lastLoginDateEnd\">AND login_account.last_login_date &lt;= #{lastLoginDateEnd}</if>\n" +
             "    LIMIT #{page} , #{pageSize}" +
             "</script>")
     List<AccountVO> list(@Param("account") String account,
                          @Param("loginStatus") Boolean loginStatus,
                          @Param("lastLoginDate")Date lastLoginDate,
+                         @Param("lastLoginDateEnd")Date lastLoginDateEnd,
                          @Param("parentUid") long parentUid,
                          @Param("page") Integer page,
                          @Param("pageSize")Integer pageSize);
@@ -91,14 +93,16 @@ public interface AccountDao {
             "        (parent_uid=#{parentUid} or UID=#{parentUid})\n" +
             "        <if test=\"null != account and '' != account\">AND accounts.accountname LIKE '%${account}%'</if>\n" +
             "        <if test=\"null != loginStatus\">AND login_account.login_status = #{loginStatus}</if>\n" +
-            "        <if test=\"null != lastLoginDate\">AND login_account.last_login_date &lt;= #{lastLoginDate}</if>\n" +
+            "        <if test=\"null != lastLoginDate\">AND login_account.last_login_date &gt;= #{lastLoginDate}</if>\n" +
+            "        <if test=\"null != lastLoginDateEnd\">AND login_account.last_login_date &lt;= #{lastLoginDateEnd}</if>\n" +
             "</script>")
     int count(@Param("account") String account,
-               @Param("loginStatus") Boolean loginStatus,
-               @Param("lastLoginDate")Date lastLoginDate,
-               @Param("parentUid") long parentUid,
-               @Param("page") Integer page,
-               @Param("pageSize")Integer pageSize);
+              @Param("loginStatus") Boolean loginStatus,
+              @Param("lastLoginDate")Date lastLoginDate,
+              @Param("lastLoginDateEnd")Date lastLoginDateEnd,
+              @Param("parentUid") long parentUid,
+              @Param("page") Integer page,
+              @Param("pageSize")Integer pageSize);
 
     @Select("<script>" +
             "    SELECT\n" +
@@ -121,12 +125,14 @@ public interface AccountDao {
             "        1=1\n" +
             "        <if test=\"null != account and '' != account\">AND accounts.accountname LIKE '%${account}%'</if>\n" +
             "        <if test=\"null != loginStatus\">AND login_account.login_status = #{loginStatus}</if>\n" +
-            "        <if test=\"null != lastLoginDate\">AND login_account.last_login_date &lt;= #{lastLoginDate}</if>\n" +
+            "        <if test=\"null != lastLoginDate\">AND login_account.last_login_date &gt;= #{lastLoginDate}</if>\n" +
+            "        <if test=\"null != lastLoginDateEnd\">AND login_account.last_login_date &lt;= #{lastLoginDateEnd}</if>\n" +
             "    LIMIT #{page} , #{pageSize}" +
             "</script>")
     List<AccountVO> listAll(@Param("account") String account,
                          @Param("loginStatus") Boolean loginStatus,
                          @Param("lastLoginDate")Date lastLoginDate,
+                         @Param("lastLoginDateEnd")Date lastLoginDateEnd,
                          @Param("page") Integer page,
                          @Param("pageSize")Integer pageSize);
 
@@ -142,11 +148,13 @@ public interface AccountDao {
             "        1=1\n" +
             "        <if test=\"null != account and '' != account\">AND accounts.accountname LIKE '%${account}%'</if>\n" +
             "        <if test=\"null != loginStatus\">AND login_account.login_status = #{loginStatus}</if>\n" +
-            "        <if test=\"null != lastLoginDate\">AND login_account.last_login_date &lt;= #{lastLoginDate}</if>\n" +
+            "        <if test=\"null != lastLoginDate\">AND login_account.last_login_date &gt;= #{lastLoginDate}</if>\n" +
+            "        <if test=\"null != lastLoginDateEnd\">AND login_account.last_login_date &lt;= #{lastLoginDateEnd}</if>\n" +
             "</script>")
     int countAll(@Param("account") String account,
               @Param("loginStatus") Boolean loginStatus,
               @Param("lastLoginDate")Date lastLoginDate,
+              @Param("lastLoginDateEnd")Date lastLoginDateEnd,
               @Param("page") Integer page,
               @Param("pageSize")Integer pageSize);
 

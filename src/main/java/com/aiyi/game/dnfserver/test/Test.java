@@ -1,19 +1,28 @@
 package com.aiyi.game.dnfserver.test;
 
+import cn.hutool.core.io.FileUtil;
 import com.aiyi.game.dnfserver.utils.MinFieldUtil;
 import com.aiyi.game.dnfserver.utils.RSATool;
+import com.xiaoyouma.dnf.parser.npk.coder.NpkCoder;
+import com.xiaoyouma.dnf.parser.npk.model.NpkImg;
+import com.xiaoyouma.dnf.parser.npk.model.NpkTexture;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import java.security.*;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.PKCS8EncodedKeySpec;
+import java.io.File;
 import java.util.Base64;
 
 public class Test {
-    public static void main(String[] args) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+
+    public static void main(String[] args) {
+        NpkCoder.initialize(new File("ImagePacks2").getAbsolutePath());
+        NpkImg npkImg = NpkCoder.loadImg("sprite/character/swordman/equipment/avatar/skin/sm_body0000.img");
+        System.out.println(npkImg);
+        NpkTexture texture = npkImg.getTextures()[209];
+        byte[] pngBytes = texture.toPngBytes();
+        // 写出
+        FileUtil.writeBytes(pngBytes, "/Users/xiatian/projects/GitHub/dnf-server-public/test.png");
+    }
+
+    public static void test2(String[] args)  {
         int uid = 18000002;
         String data = String.format("%08x010101010101010101010101010101010101010101010101010101010101010155914510010403030101", uid);
         byte[] dataBytes = hex2tobin(data);

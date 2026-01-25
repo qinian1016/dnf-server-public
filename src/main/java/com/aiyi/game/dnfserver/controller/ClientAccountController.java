@@ -110,6 +110,11 @@ public class ClientAccountController {
         map.put("imageUrl", "https://oss.icoding.ink/.inner/dnf/login_1.png");
         List<Map<String, Object>> list = new ArrayList<>();
         list.add(map);
+        Map<String, Object> map2 = new HashMap<>();
+        map2.put("id", 2);
+        map2.put("title", "重燃国服经典 回归最初的感动");
+        map2.put("imageUrl", "https://oss.icoding.ink/.inner/dnf/login_2.png");
+        list.add(map2);
         return list;
     }
 }

@@ -1,5 +1,7 @@
 package com.aiyi.game.dnfserver.entity;
 
+
+
 import com.aiyi.core.annotation.po.FieldName;
 import com.aiyi.core.annotation.po.ID;
 import com.aiyi.core.annotation.po.TableName;

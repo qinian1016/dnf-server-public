@@ -1,5 +1,6 @@
 package com.aiyi.game.dnfserver.entity;
 
+
 import com.aiyi.core.annotation.po.FieldName;
 import com.aiyi.core.annotation.po.ID;
 import com.aiyi.core.annotation.po.TableName;
@@ -15,7 +16,7 @@ public class AdminTempPassword extends PO {
     @ID
     private int id;
 
-    @FieldName(name = "PASSWORD")
+    @FieldName("PASSWORD")
     private String password;
 
     public int getId() {

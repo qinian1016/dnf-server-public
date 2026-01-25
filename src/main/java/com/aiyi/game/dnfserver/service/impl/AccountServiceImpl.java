@@ -1,9 +1,12 @@
 package com.aiyi.game.dnfserver.service.impl;
 
+import com.aiyi.core.beans.LeftJoin;
 import com.aiyi.core.beans.Method;
 import com.aiyi.core.beans.ResultPage;
+import com.aiyi.core.beans.WherePrams;
 import com.aiyi.core.exception.ValidationException;
 import com.aiyi.core.sql.where.C;
+import com.aiyi.core.util.DateUtil;
 import com.aiyi.core.util.thread.ThreadUtil;
 import com.aiyi.game.dnfserver.conf.CommonAttr;
 import com.aiyi.game.dnfserver.dao.AccountDao;
@@ -12,6 +15,7 @@ import com.aiyi.game.dnfserver.dao.AdminTempPasswordDao;
 import com.aiyi.game.dnfserver.dao.GameManagerAuthKeyDao;
 import com.aiyi.game.dnfserver.entity.AccountVO;
 import com.aiyi.game.dnfserver.entity.GameManagerAuthKey;
+import com.aiyi.game.dnfserver.entity.LoginAccount;
 import com.aiyi.game.dnfserver.service.AccountService;
 import com.aiyi.game.dnfserver.utils.MD5;
 import com.aiyi.game.dnfserver.utils.MinFieldUtil;
@@ -178,25 +182,27 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public ResultPage<AccountVO> list(String account, Boolean loginStatus,
-                                      Date lastLoginDate, int page,
+                                      Date lastLoginDate, Date laseLoginDateEnd, int page,
                                       int pageSize) {
         List<AccountVO> list = null;
         int count = 0;
         long userId = ThreadUtil.getUserId();
         AccountVO accountVO = accountVODao.get(userId);
+        if (laseLoginDateEnd != null){
+            laseLoginDateEnd = new Date(laseLoginDateEnd.getTime() + DateUtil.DAY_TIME - 1);
+        }
         if (accountVO.isAdmin()){
             list =  accountDao.listAll(account, loginStatus,
-                    lastLoginDate, (page - 1) * pageSize, pageSize);
-            count = accountDao.countAll(account, loginStatus, lastLoginDate,
+                    lastLoginDate, laseLoginDateEnd, (page - 1) * pageSize, pageSize);
+            count = accountDao.countAll(account, loginStatus, lastLoginDate, laseLoginDateEnd,
                     page, pageSize);
         }else{
             list = accountDao.list(account, loginStatus,
-                    lastLoginDate, accountVO.getUid(), (page - 1) * pageSize, pageSize);
-            count = accountDao.count(account, loginStatus, lastLoginDate, accountVO.getUid(),
+                    lastLoginDate, laseLoginDateEnd, accountVO.getUid(), (page - 1) * pageSize, pageSize);
+            count = accountDao.count(account, loginStatus, lastLoginDate, laseLoginDateEnd, accountVO.getUid(),
                     page, pageSize);
         }
         return new ResultPage<>(count, page, pageSize, list);
-
     }
 
     @Override

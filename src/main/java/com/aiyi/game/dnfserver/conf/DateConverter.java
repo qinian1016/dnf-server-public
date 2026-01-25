@@ -19,6 +19,10 @@ public class DateConverter implements Converter<String, Date> {
 
     @Override
     public Date convert(String source) {
+        // 没有HH:mm:ss的话, 就自动补充
+        if (source.length() == 10){
+            source += " 00:00:00";
+        }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
             return sdf.parse(source);

@@ -401,6 +401,11 @@ const loadDebounced = () => {
 	}, 300);
 };
 
+const getJobText = (it: any) => {
+  if (Array.isArray(it.usableJobsStr) && it.usableJobsStr.length) return it.usableJobsStr.join(' / ');
+  return '';
+};
+
 watch(() => props.modelValue, (val) => {
 	selectedItem.value = val ?? null;
 	if (val?.name) inputValue.value = val.name;
@@ -522,14 +527,14 @@ onMounted(() => {
 							<ItemImg :icon="hoverItem.icon" :rarity="hoverItem.rarity ?? 0" style="width: 48px; height: 48px;" />
 						</div>
 						<div class="hover-panel-content-col">
-							<div class="hover-title">{{ hoverItem.name }}</div>
+							<div :style="{ color: rarityMap[hoverItem.rarity ?? 0]?.color || '#f3f4f6' }" class="hover-title">{{ hoverItem.name }}</div>
 							<div class="hover-row">ID：{{ hoverItem.id }}</div>
-							<div class="hover-row">类型：{{ getItemTypeText(hoverItem) }}</div>
+							<div class="hover-row">{{ getItemTypeText(hoverItem) }} · {{ getJobText(hoverItem) }} 可使用</div>
 							<div class="hover-row">稀有度：{{ rarityMap[hoverItem.rarity ?? 0]?.label || "普通" }}</div>
 							<div class="hover-row">等级：{{ hoverItem.minimumLevel ?? 1 }}</div>
 							<div class="hover-row">堆叠上限：{{ hoverItem.stackLimit ?? 1 }}</div>
 							<div v-if="hoverItem.explain" class="hover-desc">{{ hoverItem.explain }}</div>
-							<div v-else-if="hoverItem.description" class="hover-desc">{{ hoverItem.description }}</div>
+							<div v-if="hoverItem.description" class="hover-desc">{{ hoverItem.description }}</div>
 						</div>
 					</div>
 				</div>
@@ -617,6 +622,7 @@ onMounted(() => {
 
 .category-group-body {
 	margin-top: 6px;
+  padding-left: 10px;
 }
 
 .category-item {
@@ -750,6 +756,7 @@ onMounted(() => {
 	flex-direction: row;
 	align-items: flex-start;
 	min-width: 220px;
+  border: 1px solid rgba(32, 149, 224, .4);
 }
 
 .hover-panel-icon-col {

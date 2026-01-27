@@ -89,6 +89,30 @@ const routes: Array<RouteRecordRaw> = [
                         }
                     }
                 ]
+            },
+            {
+                path: 'login',
+                meta: {
+                    title: '登录器管理'
+                },
+                children: [
+                    {
+                        path: 'config',
+                        name: 'LauncherConfig',
+                        component: () => import('../views/admin/login/LauncherConfig.vue'),
+                        meta: {
+                            title: '登录器配置'
+                        }
+                    },
+                    {
+                        path: 'versions',
+                        name: 'LauncherVersions',
+                        component: () => import('../views/admin/login/LauncherVersions.vue'),
+                        meta: {
+                            title: '版本管理'
+                        }
+                    }
+                ]
             }
         ]
     },

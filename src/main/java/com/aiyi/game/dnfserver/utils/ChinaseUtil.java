@@ -68,6 +68,27 @@ public class ChinaseUtil {
         }
     }
 
+    public static void toBig5(PO po){
+        Class<? extends PO> clazz = po.getClass();
+        Field[] declaredFields = clazz.getDeclaredFields();
+        for (Field field: declaredFields){
+            field.setAccessible(true);
+            if (field.getAnnotation(Simple.class) != null){
+                try {
+                    Object o = field.get(po);
+                    if (!(o instanceof String)) {
+                        continue;
+                    }
+                    byte[] latin1s = o.toString().getBytes(StandardCharsets.UTF_8);
+                    String s = new String(latin1s, Charset.forName("Big5"));
+                    field.set(po, s);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
     /**
      * 转换繁体
      * @param str

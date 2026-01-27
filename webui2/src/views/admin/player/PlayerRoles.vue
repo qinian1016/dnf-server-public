@@ -471,47 +471,51 @@ onMounted(() => {
 		>
 			<a-form :model="mailForm" layout="vertical" size="small" class="mail-form">
 				<a-row :gutter="16">
-					<a-col :span="12">
-						<a-form-item label="发件人">
-							<a-input v-model="mailForm.sendCharacName" disabled />
-						</a-form-item>
-					</a-col>
-					<a-col :span="12">
-						<a-form-item label="金币数量">
-							<a-input-number v-model="mailForm.gold" :min="0" :max="10000000000" style="width: 100%" />
-						</a-form-item>
+					<a-col :span="24">
+            <div class="mail-item-row">
+              <a-form-item label="发件人" style="flex: 1">
+                <a-input v-model="mailForm.sendCharacName" disabled />
+              </a-form-item>
+              <a-form-item label="金币数量" style="width: 160px">
+                <a-input-number v-model="mailForm.gold" :min="0" :max="10000000000" style="width: 100%" />
+              </a-form-item>
+            </div>
 					</a-col>
 					<a-col :span="24">
-						<a-form-item label="物品名称">
-							<div class="mail-item-row">
-								<ItemPicker v-model="mailForm.item" style="flex: 1" />
-								<a-input-number v-model="mailForm.addInfo" :min="1" :max="100000" style="width: 160px" />
-							</div>
-						</a-form-item>
+            <div class="mail-item-row">
+              <a-form-item label="物品名称" style="flex: 1">
+                <ItemPicker v-model="mailForm.item" style="width: 100%;"/>
+              </a-form-item>
+              <a-form-item label="物品数量" style="width: 160px">
+                <a-input-number v-model="mailForm.addInfo" :min="1" :max="100000" />
+              </a-form-item>
+            </div>
 					</a-col>
-					<a-col :span="12">
+					<a-col :span="6">
 						<a-form-item label="强化等级">
 							<a-input-number v-model="mailForm.upgrade" :min="0" :max="31" style="width: 100%" />
 						</a-form-item>
 					</a-col>
-					<a-col :span="12">
+					<a-col :span="6">
 						<a-form-item label="锻造等级">
 							<a-input-number v-model="mailForm.seperateUpgrade" :min="0" :max="31" style="width: 100%" />
 						</a-form-item>
 					</a-col>
-					<a-col :span="24">
-						<a-form-item label="红字属性">
-							<div class="mail-amplify-row">
-								<a-select v-model="mailForm.amplifyOption" placeholder="请选择属性" style="flex: 1">
-									<a-option label="体力" :value="1" />
-									<a-option label="精神" :value="2" />
-									<a-option label="力量" :value="3" />
-									<a-option label="智力" :value="4" />
-								</a-select>
-								<a-input-number v-model="mailForm.amplifyValue" :min="0" :max="65535" style="width: 180px" />
-							</div>
-						</a-form-item>
-					</a-col>
+          <a-col :span="6">
+            <a-form-item label="增幅属性">
+              <a-select v-model="mailForm.amplifyOption" placeholder="请选择属性" allow-clear style="flex: 1">
+                <a-option label="体力" :value="1" />
+                <a-option label="精神" :value="2" />
+                <a-option label="力量" :value="3" />
+                <a-option label="智力" :value="4" />
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :span="6">
+            <a-form-item label="增幅值">
+              <a-input-number v-model="mailForm.amplifyValue" :min="0" :max="65535" style="width: 160px" />
+            </a-form-item>
+          </a-col>
 					<a-col :span="24">
 						<a-form-item label="是否封装">
 							<div class="mail-seal-row">

@@ -47,6 +47,20 @@ menus.value = [
         meta: { title: 'PVF管理', icon: 'home' },
       }
     ]
+  },
+  {
+    path: '/login',
+    meta: { title: '登录器管理', icon: 'home' },
+    children: [
+      {
+        path: 'config',
+        meta: { title: '登录器配置', icon: 'home' },
+      },
+      {
+        path: 'versions',
+        meta: { title: '版本管理', icon: 'home' },
+      }
+    ]
   }
 ];
 

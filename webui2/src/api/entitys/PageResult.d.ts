@@ -1,7 +1,7 @@
 /**
  * 分页结果
  */
-export interface PageResult {
+export interface PageResult<T = any> {
 
     /**
      * 当页记录数
@@ -23,5 +23,5 @@ export interface PageResult {
     /**
      * 列表数据
      */
-    list: any[];
+    list: T[];
 }

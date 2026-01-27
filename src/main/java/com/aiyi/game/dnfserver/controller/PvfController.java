@@ -38,7 +38,7 @@ import java.util.Map;
 
 /**
  * Pvf相关接口
- * 
+ *
  * @author gsk
  */
 @RestController
@@ -69,15 +69,15 @@ public class PvfController {
         }
         result.put("size", fileSizeStr);
         result.put("equipmentCount", PvfCache.getEquipmentList().size());
-        result.put("equipmentList", PvfCache.getEquipmentList());
+//        result.put("equipmentList", PvfCache.getEquipmentList());
         result.put("itemCount", PvfCache.getStackableList().size());
-        result.put("itemList", PvfCache.getStackableList());
+//        result.put("itemList", PvfCache.getStackableList());
         return result;
     }
 
     /**
      * 分页查询物品
-     * 
+     *
      * @param keyword  关键字(名称或ID)
      * @param type     物品类型: 装备/道具 (equipment/stackable)
      * @param subType  细分类型: EquipmentType 或 StackableType

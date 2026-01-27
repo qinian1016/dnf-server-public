@@ -118,6 +118,7 @@ public class ClientAccountController {
     /**
      * 获取客户端更新列表（根据客户端版本获取更新列表）
      */
+    @NoLogin
     @GetMapping("api/v1/client/version/{currentVersion}")
     public List<ClientLauncherVersion> getClientUpdateList(@PathVariable String currentVersion){
         return clientLauncherService.listUpdateVersions(currentVersion);

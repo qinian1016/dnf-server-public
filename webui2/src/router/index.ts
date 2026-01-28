@@ -17,17 +17,87 @@ const routes: Array<RouteRecordRaw> = [
     {
         path: '/',
         name: 'PublicLayout',
-        redirect: '/home', // 默认跳转到子页面
+        component: () => import('../views/custom/Index.vue'),
+        redirect: '/home',
         children: [
             {
-                path: 'home', // 访问地址: /home
+                path: 'home',
                 name: 'PublicHome',
-                component: () => import('../views/custom/Index.vue'),
-                meta: {
-                    title: '首页',
-                    requiresAuth: false
-                }
+                component: () => import('../views/custom/legacy/HomePage.vue'),
+                meta: { title: '首页', requiresAuth: false }
             },
+            {
+                path: 'about-clan',
+                name: 'AboutClan',
+                component: () => import('../views/custom/legacy/AboutClanPage.vue'),
+                meta: { title: '模型补丁', requiresAuth: false }
+            },
+            {
+                path: 'about-me',
+                name: 'AboutMe',
+                component: () => import('../views/custom/legacy/AboutMePage.vue'),
+                meta: { title: '地图攻略', requiresAuth: false }
+            },
+            {
+                path: 'faq',
+                name: 'Faq',
+                component: () => import('../views/custom/legacy/FaqPage.vue'),
+                meta: { title: 'FAQ', requiresAuth: false }
+            },
+            {
+                path: 'gallery',
+                name: 'Gallery',
+                component: () => import('../views/custom/legacy/GalleryPage.vue'),
+                meta: { title: '图库', requiresAuth: false }
+            },
+            {
+                path: 'matches',
+                name: 'Matches',
+                component: () => import('../views/custom/legacy/MatchesPage.vue'),
+                meta: { title: '比赛', requiresAuth: false }
+            },
+            {
+                path: 'matches-single',
+                name: 'MatchSingle',
+                component: () => import('../views/custom/legacy/MatchSinglePage.vue'),
+                meta: { title: '比赛详情', requiresAuth: false }
+            },
+            {
+                path: 'players',
+                name: 'Players',
+                component: () => import('../views/custom/legacy/PlayersPage.vue'),
+                meta: { title: '玩家', requiresAuth: false }
+            },
+            {
+                path: 'blog',
+                name: 'Blog',
+                component: () => import('../views/custom/legacy/BlogPage.vue'),
+                meta: { title: '博客', requiresAuth: false }
+            },
+            {
+                path: 'blog-single',
+                name: 'BlogSingle',
+                component: () => import('../views/custom/legacy/BlogSinglePage.vue'),
+                meta: { title: '博客详情', requiresAuth: false }
+            },
+            {
+                path: 'contact',
+                name: 'Contact',
+                component: () => import('../views/custom/legacy/ContactPage.vue'),
+                meta: { title: '联系', requiresAuth: false }
+            },
+            {
+                path: 'index-2',
+                name: 'Index2',
+                component: () => import('../views/custom/legacy/Index2Page.vue'),
+                meta: { title: '首页', requiresAuth: false }
+            },
+            {
+                path: 'notice',
+                name: 'Notice',
+                component: () => import('../views/custom/legacy/NoticePage.vue'),
+                meta: { title: '公告', requiresAuth: false }
+            }
         ]
     },
 
@@ -113,6 +183,14 @@ const routes: Array<RouteRecordRaw> = [
                         }
                     }
                 ]
+            },
+            {
+                path: 'assist',
+                name: 'AssistManager',
+                component: () => import('../views/admin/assist/AssistManager.vue'),
+                meta: {
+                    title: '内辅管理'
+                }
             }
         ]
     },

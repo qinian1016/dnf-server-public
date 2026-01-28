@@ -4,6 +4,7 @@ import {nextTick, onMounted, ref} from "vue";
 import RecursiveMenuItem from "../../components/RecursiveMenuItem.vue";
 import router from "../../router";
 import {ApiGlobalConfig} from "../../api/ApiGlobalConfig.ts";
+import Request from "../../api/Request.ts";
 
 const collapsed = ref(false);
 const onCollapse = () => {
@@ -61,6 +62,10 @@ menus.value = [
         meta: { title: '版本管理', icon: 'home' },
       }
     ]
+  },
+  {
+    path: '/assist',
+    meta: { title: '客户端管理', icon: 'home' }
   }
 ];
 
@@ -150,6 +155,14 @@ const onDeleteTab = (tabKey: string) => {
     }
   }
 };
+
+const logout = () => {
+  localStorage.removeItem('token')
+  router.replace('/login')
+}
+
+// TODO 临时先随便请求个接口，触发后端验证token逻辑，获取用户信息
+Request.get('api/v1/account?page=1&pageSize=1')
 </script>
 
 <template>
@@ -214,7 +227,7 @@ const onDeleteTab = (tabKey: string) => {
                 </a-avatar>
               </div>
               <div class="user-info-right" style="color: white; margin-left: 8px;">
-                <div>{{userInfo ? (userInfo.nickName ? userInfo.nickName : userInfo.userName) : '未登录'}}</div>
+                <div>{{userInfo ? (userInfo.nickName ? userInfo.nickName : userInfo.userName) : 'GM管理员'}}</div>
                 <div style="font-size: 12px;" v-if="userInfo">{{userInfo.email ? userInfo.email : (userInfo.phonenumber ? userInfo.phonenumber : '')}}</div>
               </div>
             </div>
@@ -225,7 +238,7 @@ const onDeleteTab = (tabKey: string) => {
               <a-doption>
                 <icon-lock style="margin-right: 10px"/>修改密码
               </a-doption>
-              <a-doption>
+              <a-doption @click="logout">
                 <icon-poweroff style="margin-right: 10px"/>退出登录
               </a-doption>
             </template>

@@ -72,15 +72,16 @@ const login = () => {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: url('../assets/images/login/login-bg.png') no-repeat center center fixed;
+  background: url('../assets/images/login/login-bg2.png') no-repeat center center fixed;
   background-size: cover;
 
   .login-box {
     width: 340px;
     padding: 40px;
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.6);
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
 
     .login-box-header {
       text-align: center;
@@ -107,6 +108,9 @@ const login = () => {
     .login-box-body {
       a-form-item {
         margin-bottom: 20px;
+      }
+      /deep/.arco-input-wrapper{
+        background: rgba(216, 216, 216, 0.5);
       }
     }
 

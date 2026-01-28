@@ -5,8 +5,11 @@ import com.aiyi.core.annotation.po.ID;
 import com.aiyi.core.annotation.po.TableName;
 import com.aiyi.core.beans.PO;
 
+import java.util.Date;
+
 /**
  * 内辅配置
+ * @author gsk
  */
 @TableName(name = "`dnf_service`.`ASSIST_CONFIG`")
 public class AssistConfig extends PO {
@@ -17,11 +20,11 @@ public class AssistConfig extends PO {
     /**
      * JSON 配置内容
      */
-    @FieldName("CONFIG_JSON")
+    @FieldName(name = "CONFIG_JSON")
     private String configJson;
 
-    @FieldName("UPDATE_TIME")
-    private java.util.Date updateTime;
+    @FieldName(name = "UPDATE_TIME")
+    private Date updateTime;
 
     public int getId() {
         return id;

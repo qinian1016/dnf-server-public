@@ -253,8 +253,38 @@ aliyun:
 ````
 9. 服务器安装JDK24环境，将`target/dnf-server-0.0.1-SNAPSHOT.jar`上传至服务器
 10. 在`dnf-server-0.0.1-SNAPSHOT.jar`同目录下, 上传Script.pvf.
-11. 在服务器jar包目录下执行: `nohup java -jar dnf-server-0.0.1-SNAPSHOT.jar &`
-12. 配置前端页面， 参考这里的步骤，但无需拉取项目，本仓库已经集成前段代码了，再webui目录中：https://github.com/onlyGuo/dnf-server-web-public.git
+11. 在服务器jar包目录下执行: `nohup java -jar dnf-server-0.0.1-SNAPSHOT.jar &`, 端口默认9001
+12. 配置前端页面，确保本机已经安装了Node.js, 以`v22.21.1`为例, 进入到webui2目录中
+13. 依次执行下面命令:
+```` bash
+npm install
+npm run build
+````
+14. 务器创建站点，将本项目源码编译文件放到站点目录中，并配置反向代理防止本项目与后台交互产生跨域问题，以nginx为例。
+```nginx
+server{
+    listen       9002;        # 页面访问端口
+    listen  [::]:9002;        # 页面访问端口
+    server_name  localhost;
+    
+    # 站点目录， “/home/html/dnf”改为你自己的目录
+    location / {
+        root   /home/html/dnf;
+        try_files $uri $uri/ /index.html;
+    }
+
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   /usr/share/nginx/html;
+    }
+
+    # 后台服务代理，“http://172.18.0.3:9001;”改为你自己的服务路径和端口
+    location ~/api/v1 {
+        proxy_pass http://172.18.0.3:9001;
+        proxy_set_header Host $host:$server_port;
+    }
+}
+```
 
 #### 使用说明
 

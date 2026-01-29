@@ -1,9 +1,12 @@
 package com.aiyi.game.dnfserver.controller;
 
+import com.aiyi.core.beans.Method;
 import com.aiyi.core.exception.ValidationException;
+import com.aiyi.core.sql.where.C;
 import com.aiyi.core.util.DateUtil;
 import com.aiyi.game.dnfserver.conf.NoLogin;
 import com.aiyi.game.dnfserver.dao.AccountDao;
+import com.aiyi.game.dnfserver.dao.AccountVODao;
 import com.aiyi.game.dnfserver.dao.User;
 import com.aiyi.game.dnfserver.entity.AccountVO;
 import com.aiyi.game.dnfserver.utils.Common;
@@ -35,15 +38,19 @@ public class LoginController {
 
 
     @Resource
-    private AccountDao accountDao;
+    private AccountVODao accountVODao;
 
     @PostMapping
     @NoLogin
     public String login(@RequestBody User user){
         String password = MD5.getMd5(user.getPassword());
-        AccountVO account = accountDao.getByAccountAndPswd(user.getAccount(), password);
+        AccountVO account = accountVODao.get(Method.where(AccountVO::getAccountname, C.EQ, user.getAccount())
+                .and(AccountVO::getPassword, C.EQ, password));
         if (null == account){
             throw new ValidationException("账号或密码错误");
+        }
+        if (!account.isAdmin() && account.getParentUid() != 0){
+            throw new ValidationException("只有GM账号才能登录后台管理系统");
         }
         user.setId(account.getUid());
         String token = UUID.randomUUID().toString().replace("-", "");

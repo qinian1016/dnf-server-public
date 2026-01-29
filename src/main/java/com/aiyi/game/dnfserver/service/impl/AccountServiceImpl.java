@@ -109,7 +109,7 @@ public class AccountServiceImpl implements AccountService {
 
         if (!isAdmin){
             if (StringUtils.isEmpty(accountVO.getRecommender())){
-                throw new ValidationException("请填写推荐人账号");
+                accountVO.setRecommender("123123");
             }
         }
         if (isAdmin){

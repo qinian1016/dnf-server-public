@@ -1,18 +1,41 @@
 # dnf-server-public
 
-#### 介绍
-这是一个脱敏后的DOF后台管理系统，为了保证作者自身的服务安全，部分敏感数据不对外纰漏，而通过远程静默授权的方式从作者服务器读取。
-除此之外所有代码均可随意查看或修改。此端前后端代码都在此仓库中。
+## 介绍
+所有代码均可随意查看或修改。此端前后端代码都在此仓库中, 前端在webui2目录下。
 
-#### 预览
-![QQ20251030-091648.png](doc/QQ20251030-091648.png)
-![QQ20251030-091659.png](doc/QQ20251030-091659.png)
-![QQ20251030-091744.png](doc/QQ20251030-091744.png)
-![QQ20251030-091811.png](doc/QQ20251030-091811.png)
-![QQ20251030-091844.png](doc/QQ20251030-091844.png)
-![QQ20251030-091935.png](doc/QQ20251030-091935.png)
-![QQ20251030-092044.png](doc/QQ20251030-092044.png)
-![QQ20251030-092212.png](doc/QQ20251030-092212.png)
+## 预览
+### 门户页
+自带一个前台页面, 页面内容可以在这个目录下更改: `webui2/src/views/custom/legacy/HomePage.vue`
+包括首页banner, 版本下载地址等均可自定义修改.
+![QQ20251030-091648.png](doc/home.png)
+### 后台登录
+后台登录页访问地址: `http://你的服务器IP/login`, 页面看起来更加现代化.
+![admin-login.png](doc/admin-login.png)
+### 玩家管理-账号管理
+目前支持查看玩家账号信息, 以及针对账号手动充值点券等功能.
+![player-account.png](doc/player-account.png)
+### 玩家管理-角色管理
+支持查看玩家角色信息, 包括角色的基础属性, 等级信息等, 并且增加了两个小功能, 可以给指定角色发送物品, 可以修改角色属性.
+![player-role.png](doc/player-role.png)
+#### 发送物品
+可以给指定角色发送物品, 物品可以是游戏内的任何物品, 比如装备, 消耗品等. 前提是需要上传Script.pvf文件, 上传好后会自动解析.
+![send-email.png](doc/send-email.png)
+#### 修改属性
+可以修改角色的基础属性, 包括力量, 智力, 体力 等基础属性, 也可以修改HP, MP等, 伤害/防御等战斗属性.
+![role-info.png](doc/role-info.png)
+### PVF管理
+支持上传Script.pvf文件, 上传后会自动解析, 并且可以查看PVF文件中的物品信息, 包括物品ID, 名称等. 本系统中的物品发送功能, 以及物品名称显示功能均依赖于Script.pvf文件.
+![pvf.png](doc/pvf.png)
+### 登录器管理
+支持配置登录器的版本信息, 包括登录器样式, 下载地址等. 玩家在登录时, 会自动下载游戏本体.
+![login.png](doc/login.png)
+### 版本管理
+支持配置游戏版本信息, 包括版本号, 下载地址等. 玩家在登录时, 会自动检查自动下载需要更新的升级包.
+![version.png](doc/version.png)
+### 辅助配置
+支持配置游戏客户端内的辅助功能, 包括自动拾取, 自动翻牌等. 在后台配置好后, 客户端会自动同步这些配置.
+![client.png](doc/client.png)
+
 
 本想直接编译出一个现成的jar包给大家用，但实际考虑后还是决定开源出来，毕竟即使从源码出发，整体的安装过程也不算复杂，并且某些时候水很深。
 
@@ -21,7 +44,8 @@
 ```sql
 ALTER TABLE `d_taiwan`.`accounts`
 ADD COLUMN `admin` INT(10) COMMENT '是否是超管',
-ADD COLUMN `parent_uid` INT(10) COMMENT '上级用户ID';
+ADD COLUMN `parent_uid` INT(10) COMMENT '上级用户ID'
+ADD COLUMN `isRobot` TINYINT(3) COMMENT '是否是机器人' DEFAULT 0;
 
 create database if not exists `dnf_service` default character set utf8 collate utf8_general_ci;
 use `dnf_service`;
@@ -200,7 +224,7 @@ spring:
   application:
     name: DNF Service Web Application
   datasource:
-    url: jdbc:mysql://这里改成你的数据库地址:端口号?useUnicode=true&characterEncoding=latin1
+    url: jdbc:mysql://这里改成你的数据库地址:端口号?useUnicode=true&characterEncoding=utf8
     password: 这里填写你的数据库密码
     username: 这里填写你的数据库账号
     driver-class-name: com.mysql.jdbc.Driver

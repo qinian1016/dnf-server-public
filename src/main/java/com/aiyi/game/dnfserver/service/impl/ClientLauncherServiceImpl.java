@@ -7,9 +7,12 @@ import com.aiyi.core.beans.WherePrams;
 import com.aiyi.core.enums.OrderBy;
 import com.aiyi.core.exception.ValidationException;
 import com.aiyi.core.sql.where.C;
+import com.aiyi.core.util.thread.ThreadUtil;
+import com.aiyi.game.dnfserver.dao.AccountVODao;
 import com.aiyi.game.dnfserver.dao.ClientLauncherBannerDao;
 import com.aiyi.game.dnfserver.dao.ClientLauncherConfigDao;
 import com.aiyi.game.dnfserver.dao.ClientLauncherVersionDao;
+import com.aiyi.game.dnfserver.entity.AccountVO;
 import com.aiyi.game.dnfserver.entity.ClientLauncherBanner;
 import com.aiyi.game.dnfserver.entity.ClientLauncherConfig;
 import com.aiyi.game.dnfserver.entity.ClientLauncherVersion;
@@ -37,6 +40,9 @@ public class ClientLauncherServiceImpl implements ClientLauncherService {
 
     @Resource
     private ClientLauncherBannerDao bannerDao;
+
+    @Resource
+    private AccountVODao accountVODao;
 
     @Override
     public ClientLauncherConfig getConfig() {
@@ -102,6 +108,10 @@ public class ClientLauncherServiceImpl implements ClientLauncherService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ClientLauncherVersion addVersion(ClientLauncherVersion version) {
+        AccountVO accountVO = accountVODao.get(ThreadUtil.getUserId());
+        if (!accountVO.isAdmin()) {
+            throw new ValidationException("只有最高管理员才能执行此操作");
+        }
         if (version == null) {
             throw new ValidationException("参数不能为空");
         }
@@ -126,6 +136,10 @@ public class ClientLauncherServiceImpl implements ClientLauncherService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ClientLauncherVersion updateVersion(ClientLauncherVersion version) {
+        AccountVO accountVO = accountVODao.get(ThreadUtil.getUserId());
+        if (!accountVO.isAdmin()) {
+            throw new ValidationException("只有最高管理员才能执行此操作");
+        }
         if (version == null) {
             throw new ValidationException("参数不能为空");
         }
@@ -148,6 +162,10 @@ public class ClientLauncherServiceImpl implements ClientLauncherService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteVersion(int id) {
+        AccountVO accountVO = accountVODao.get(ThreadUtil.getUserId());
+        if (!accountVO.isAdmin()) {
+            throw new ValidationException("只有最高管理员才能执行此操作");
+        }
         if (id <= 0) {
             return;
         }
@@ -186,6 +204,10 @@ public class ClientLauncherServiceImpl implements ClientLauncherService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ClientLauncherBanner addBanner(ClientLauncherBanner banner) {
+        AccountVO accountVO = accountVODao.get(ThreadUtil.getUserId());
+        if (!accountVO.isAdmin()) {
+            throw new ValidationException("只有最高管理员才能执行此操作");
+        }
         if (banner == null) {
             throw new ValidationException("参数不能为空");
         }
@@ -209,6 +231,10 @@ public class ClientLauncherServiceImpl implements ClientLauncherService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ClientLauncherBanner updateBanner(ClientLauncherBanner banner) {
+        AccountVO accountVO = accountVODao.get(ThreadUtil.getUserId());
+        if (!accountVO.isAdmin()) {
+            throw new ValidationException("只有最高管理员才能执行此操作");
+        }
         if (banner == null) {
             throw new ValidationException("参数不能为空");
         }
@@ -229,6 +255,10 @@ public class ClientLauncherServiceImpl implements ClientLauncherService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteBanner(int id) {
+        AccountVO accountVO = accountVODao.get(ThreadUtil.getUserId());
+        if (!accountVO.isAdmin()) {
+            throw new ValidationException("只有最高管理员才能执行此操作");
+        }
         if (id <= 0) {
             return;
         }

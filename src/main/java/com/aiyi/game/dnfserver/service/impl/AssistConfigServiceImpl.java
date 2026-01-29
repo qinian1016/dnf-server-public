@@ -1,7 +1,10 @@
 package com.aiyi.game.dnfserver.service.impl;
 
 import com.aiyi.core.exception.ValidationException;
+import com.aiyi.core.util.thread.ThreadUtil;
+import com.aiyi.game.dnfserver.dao.AccountVODao;
 import com.aiyi.game.dnfserver.dao.AssistConfigDao;
+import com.aiyi.game.dnfserver.entity.AccountVO;
 import com.aiyi.game.dnfserver.entity.AssistConfig;
 import com.aiyi.game.dnfserver.service.AssistConfigService;
 import com.alibaba.fastjson.JSON;
@@ -25,6 +28,9 @@ public class AssistConfigServiceImpl implements AssistConfigService {
 
     @Resource
     private AssistConfigDao assistConfigDao;
+
+    @Resource
+    private AccountVODao accountVODao;
 
     private static final int SINGLETON_ID = 1;
 
@@ -55,6 +61,10 @@ public class AssistConfigServiceImpl implements AssistConfigService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Map<String, Object> saveConfig(Map<String, Object> config) {
+        AccountVO accountVO = accountVODao.get(ThreadUtil.getUserId());
+        if (!accountVO.isAdmin()) {
+            throw new ValidationException("只有最高管理员才能执行此操作");
+        }
         if (config == null) {
             throw new ValidationException("参数不能为空");
         }
